@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Node.fs", "Library1\Node.fs.fsproj", "{54569B40-8BE0-4089-BB82-9383AC7B4CC3}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Node.fs.Core", "Node.fs.Core\Node.fs.Core.fsproj", "{54569B40-8BE0-4089-BB82-9383AC7B4CC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

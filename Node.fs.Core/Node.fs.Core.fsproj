@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="console.fs" />
     <None Include="Script.fsx" />
+    <Compile Include="http.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

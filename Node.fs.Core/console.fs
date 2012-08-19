@@ -11,25 +11,25 @@ type console = class
     new() = { }
 
     [<DefaultValue>]
-    static val mutable private MyProperty : Dictionary<string, DateTime>
+    val mutable private MyProperty : Dictionary<string, DateTime>
 
-    static member log (format : Printf.TextWriterFormat<'T>) =
+    member self.log (format : Printf.TextWriterFormat<'T>) =
         printfn format
 
-    static member info (format : Printf.TextWriterFormat<'T>) =
-        console.log format
+    member self.info (format : Printf.TextWriterFormat<'T>) =
+        self.log format
 
-    static member error (format : Printf.TextWriterFormat<'T>) =
+    member self.error (format : Printf.TextWriterFormat<'T>) =
         eprintfn format
 
-    static member warn (format : Printf.TextWriterFormat<'T>) =
-        console.warn format
+    member self.warn (format : Printf.TextWriterFormat<'T>) =
+        self.warn format
 
     // Remove first two lines of stack trace?
-    static member trace (label) = 
+    member self.trace (label) = 
         printfn "%s\n%s" label System.Environment.StackTrace
 
-    static member assertThat (expr, ?message) = 
+    member self.assertThat (expr, ?message) = 
 
         let msg = match message with
                     | Some x -> x
@@ -38,21 +38,21 @@ type console = class
         if not expr then raise(AssertionError(msg))
         ()
 
-    static member time (label) =
+    member self.time (label) =
 
-        let dict = match console.MyProperty with
+        let dict = match self.MyProperty with
                     | null -> new Dictionary<string, DateTime>()
-                    | _ -> console.MyProperty
+                    | _ -> self.MyProperty
         
 
-        console.MyProperty <- dict
-        console.MyProperty.Add(label, DateTime.Now)
+        self.MyProperty <- dict
+        self.MyProperty.Add(label, DateTime.Now)
 
-    static member timeEnd (label) = 
+    member self.timeEnd (label) = 
 
-        let dict = match console.MyProperty with
+        let dict = match self.MyProperty with
                     | null -> new Dictionary<string, DateTime>()
-                    | _ -> console.MyProperty
+                    | _ -> self.MyProperty
 
         if dict.ContainsKey(label) then 
             
@@ -61,7 +61,7 @@ type console = class
 
             let diff = endTime - startTime
 
-            console.log "%s: %s" label (diff.ToString())
+            self.log "%s: %s" label (diff.ToString())
 
             dict.Remove(label) |> ignore
 
