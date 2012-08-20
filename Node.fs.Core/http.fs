@@ -66,7 +66,7 @@ type http = class
 
     new() = {}
 
-    member self.createServer f (a:int) (b:int) = 
+    member self.createServer f = 
         new httpServer(f)
 
 end

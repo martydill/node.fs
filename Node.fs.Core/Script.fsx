@@ -4,17 +4,14 @@
 #load "console.fs"
 #load "http.fs"
 
-open Node.fs
 open Node.fs.Core.Http
-open Node.fs.Core.Console
 
-// Define your library scripting code here
+let http = new http()
 
-let handler(req:httpServerRequest, resp:httpServerResponse) =
-    resp.writeHead(200, dict["Content-Type", "text/html"])
-    resp.write("Hello, world!")
-    resp.endResponse
+http.createServer(fun (request, response) -> 
+    response.writeHead (200, dict["Content-Type", "text/plain"])
+    response.write "Hello, world!"
+    response.endResponse
+).listen(8888)
 
-let server = httpServer(handler)
-
-server.listen(9999)
+ 
