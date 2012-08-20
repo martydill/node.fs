@@ -10,9 +10,9 @@ open Node.fs.Core.Console
 
 // Define your library scripting code here
 
-
 let handler(req:httpServerRequest, resp:httpServerResponse) =
-    resp.write("asdf") |> ignore
+    resp.writeHead(200, dict["Content-Type", "text/html"])
+    resp.write("Hello, world!")
     resp.endResponse
 
 let server = httpServer(handler)

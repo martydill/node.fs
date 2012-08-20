@@ -25,10 +25,15 @@ type httpServerResponse = class
         let bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(data)
         self.resp.OutputStream.Write(bytes, 0, bytes.Length)
 
-    member self.writeHead (statusCode:int) = 
+    member self.writeHead (statusCode:int, headers:System.Collections.Generic.IDictionary<string, string>) = 
         
-        self.resp.StatusCode = statusCode
-        
+        for key in headers.Keys do
+            match headers.[key] with
+            | "Content-Type" -> self.resp.ContentType <- headers.[key]
+            | _ -> self.resp.AddHeader(key, headers.[key])
+            
+        self.resp.StatusCode <- statusCode
+        ()
 
 end
 
