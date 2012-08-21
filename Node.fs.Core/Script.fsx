@@ -5,8 +5,10 @@
 #load "http.fs"
 
 open Node.fs.Core.Http
+open Node.fs.Core.Console
 
 let http = new http()
+let console = new console()
 
 http.createServer(fun (request, response) -> 
     response.writeHead (200, dict["Content-Type", "text/plain"])
@@ -15,3 +17,4 @@ http.createServer(fun (request, response) ->
 ).listen(8888)
 
  
+console.log "The server has started"
