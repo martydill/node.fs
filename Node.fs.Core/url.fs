@@ -17,12 +17,12 @@ type parsedUrl = {
    }
 
 
-
+// http://nodejs.org/api/all.html#all_url
 type url = class
 
     new() = {}
 
-    member self.parse urlString = 
+    member self.parse(urlString, ?parseQueryString, ?slashesDenoteHost)  = 
 
         let theParsedUrl = new System.Uri(urlString)
 
@@ -40,6 +40,11 @@ type url = class
             hash = theParsedUrl.Fragment;
          }
         
+    member self.format urlobj =
+        raise (System.NotImplementedException())
+
+    member self.resolve(fromUrl, toUrl) =
+        raise (System.NotImplementedException())
 end
 
 module tests = 
