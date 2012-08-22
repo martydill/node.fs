@@ -5,7 +5,7 @@ I aim to keep the API as similar as possible to the Node.js APIs, but due to lan
 
 It can currently run F# versions of simple Node.js apps, such as some of the ones from the Node Beginner Book (http://www.nodebeginner.org).
 Here is an example:
-
+<pre>
 open Node.fs.Core.Http
 open Node.fs.Core.Console
 
@@ -17,5 +17,6 @@ http.createServer(fun (request, response) ->
     response.write "Hello, world!"
     response.endResponse
 ).listen(8888)
+</pre>
 
 
