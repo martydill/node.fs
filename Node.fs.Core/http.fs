@@ -7,6 +7,8 @@ type httpServerRequest = class
 
     new(httpListenerRequest) = { req = httpListenerRequest }
 
+    member self.url = 
+        self.req.Url.OriginalString
 end
 
 

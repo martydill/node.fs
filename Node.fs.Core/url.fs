@@ -23,9 +23,11 @@ type url = class
     new() = {}
 
     member self.parse(urlString, ?parseQueryString, ?slashesDenoteHost)  = 
-
+        printfn "%s" urlString
+        
         let theParsedUrl = new System.Uri(urlString)
-
+        
+        let query = if theParsedUrl.Query.Length > 0 then theParsedUrl.Query.Substring(1, theParsedUrl.Query.Length - 1) else ""
         { 
             href = theParsedUrl.OriginalString;
             protocol = theParsedUrl.Scheme + ":";
@@ -34,9 +36,9 @@ type url = class
             hostname = theParsedUrl.Host;
             port = theParsedUrl.Port.ToString();
             pathname = theParsedUrl.AbsolutePath;
-            search = "?" + theParsedUrl.Query.Substring(1, theParsedUrl.Query.Length - 1);
+            search = "?" + query;
             path = theParsedUrl.PathAndQuery;
-            query = theParsedUrl.Query.Substring(1, theParsedUrl.Query.Length - 1)
+            query = query;
             hash = theParsedUrl.Fragment;
          }
         
