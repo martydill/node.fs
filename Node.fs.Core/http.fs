@@ -45,22 +45,18 @@ type httpServer(func) = class
     member self.requestHandler(request, response) = 
         func(request, response)
 
+    member self.gotContext(result:System.IAsyncResult) = 
+        let l = result.AsyncState :?> System.Net.HttpListener
+        let context = l.EndGetContext(result)
+        self.requestHandler(new httpServerRequest(context.Request), new httpServerResponse(context.Response))
+
     member self.listen (port:int) = 
         let listener = new System.Net.HttpListener()
         let prefix = "http://localhost:" + port.ToString() + "/"
         listener.Prefixes.Add(prefix)
         printfn "Listening at %s" prefix
         listener.Start()
-        let context = listener.GetContext()
-        printfn "Got context"
-        self.requestHandler(new httpServerRequest(context.Request), new httpServerResponse(context.Response))
-        
-//        let bytes = System.Text.ASCIIEncoding.ASCII.GetBytes("Hello World!");
-//        
-//        context.Response.OutputStream.Write(bytes, 0, bytes.Length);
-//        context.Response.Close();
-        //listener.Stop();
-        ()
+        listener.BeginGetContext((fun x -> self.gotContext x), listener) |> ignore
 
 end
 
@@ -72,3 +68,5 @@ type http = class
         new httpServer(f)
 
 end
+
+
