@@ -1,16 +1,35 @@
 ﻿namespace Node.fs.Core.Http
 
 
-type httpServerRequest = class
+type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
     
-    val req : System.Net.HttpListenerRequest
+    let req = httpListenerRequest
 
-    new(httpListenerRequest) = { req = httpListenerRequest }
+    do
+        printfn "a"
+        let data = Array.zeroCreate 1024
+        req.InputStream.BeginRead(data, 0, 1024, fun callback ->
+            printfn "Got data"
+        , null) |> ignore
+
+
+    let mutable dataHandler = ()
+    let mutable endHandler = ()
+    let mutable closeHandler = ()
 
     member self.url = 
-        self.req.Url.OriginalString
-end
+        req.Url.OriginalString
 
+    member self.addListener(eventName, func) = 
+        match eventName with
+        | "data" -> dataHandler <- func
+        | "end" -> endHandler <- func
+        | "close" -> closeHandler <- func
+        | _ -> raise (System.ArgumentException("Unknown event name " + eventName))
+        
+        ()
+
+    
 
 type httpServerResponse = class
     
@@ -40,15 +59,7 @@ type httpServerResponse = class
 end
 
 
-type httpServer(func) = class
-
-    member self.requestHandler(request, response) = 
-        func(request, response)
-
-    member self.gotContext(result:System.IAsyncResult) = 
-        let l = result.AsyncState :?> System.Net.HttpListener
-        let context = l.EndGetContext(result)
-        self.requestHandler(new httpServerRequest(context.Request), new httpServerResponse(context.Response))
+type httpServer(requestHandlerFunction) = class
 
     member self.listen (port:int) = 
         let listener = new System.Net.HttpListener()
@@ -56,8 +67,17 @@ type httpServer(func) = class
         listener.Prefixes.Add(prefix)
         printfn "Listening at %s" prefix
         listener.Start()
-        listener.BeginGetContext((fun x -> self.gotContext x), listener) |> ignore
 
+        Async.Start(self.listenImpl(listener))
+
+
+    member self.listenImpl(listener:System.Net.HttpListener) = async {
+
+        while listener.IsListening do
+            let! context = Async.FromBeginEnd(listener.BeginGetContext, listener.EndGetContext)
+            requestHandlerFunction(new httpServerRequest(context.Request), new httpServerResponse(context.Response))
+        }
+        
 end
 
 type http = class
