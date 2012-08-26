@@ -6,7 +6,7 @@ I aim to keep the API as similar as possible to the Node.js APIs, but due to lan
 It can currently run F# versions of simple Node.js apps, such as some of the ones from the Node Beginner Book (http://www.nodebeginner.org).
 Here is an example:
 <pre>
-
+<code>
 let http = new http()
 let console = new console()
 let url = new url()
@@ -47,7 +47,7 @@ http.createServer(fun (request, response) ->
 
 console.log "The server has started"
 Console.ReadLine() |> ignore
-			
+</code>			
 </pre>
 
 
