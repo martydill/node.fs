@@ -48,7 +48,6 @@ module Main =
 
             ).listen(8888)
 
- 
-            console.log "The server has started" |> ignore
+            console.log "The server has started"
             Console.ReadLine() |> ignore
             0
