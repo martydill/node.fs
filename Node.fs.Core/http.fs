@@ -19,7 +19,7 @@ type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
             let! bytesRead = req.InputStream.AsyncRead(data, 0, 1024)
             let str = System.Text.Encoding.UTF8.GetString(data, 0, bytesRead)
             count := bytesRead
-            dataHandler str
+            if !count > 0 then dataHandler str
             ()
         
         endHandler ""
