@@ -29,16 +29,16 @@ http.createServer(fun (request, response) ->
 
 	else
 
-		let data =  "<html>" +
-					"\<head>"+
-					"\</head>"+
-					"<body>"+
-					"<form action=\"/upload\" method=\"post\">"+
-					"<textarea name=\"text\" rows=\"20\" cols=\"60\"></textarea>"+
-					"<input type=\"submit\" value=\"Submit text\" />"+
-					"</form>"+
-					"</body>"+
-					"</html>"
+		let data =  "&lt;html>" +
+					"&lt;head>"+
+					"&lt;/head>"+
+					"&lt;body>"+
+					"&lt;form action=\"/upload\" method=\"post\">"+
+					"&lt;textarea name=\"text\" rows=\"20\" cols=\"60\"></textarea>"+
+					"&lt;input type=\"submit\" value=\"Submit text\" />"+
+					"&lt;/form>"+
+					"&lt;/body>"+
+					"&lt;/html>"
 
 		response.write data
 		response.endResponse
