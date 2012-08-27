@@ -30,8 +30,8 @@ http.createServer(fun (request, response) ->
 	else
 
 		let data =  "<html>" +
-					"<head>"+
-					"</head>"+
+					"\<head>"+
+					"\</head>"+
 					"<body>"+
 					"<form action=\"/upload\" method=\"post\">"+
 					"<textarea name=\"text\" rows=\"20\" cols=\"60\"></textarea>"+
