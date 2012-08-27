@@ -42,9 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="console.fs" />
-    <None Include="Script.fsx" />
     <Compile Include="http.fs" />
     <Compile Include="url.fs" />
+    <Compile Include="fs.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <PropertyGroup>

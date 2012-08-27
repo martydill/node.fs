@@ -18,7 +18,7 @@ module Main =
                 response.writeHead (200, dict["Content-Type", "text/html"])
                 let pathname = url.parse(request.url).pathname
                 console.log "Request for %s received." pathname
-
+                
                 if pathname = "/upload" then
                     
                     request.addListener("data", fun data -> 
