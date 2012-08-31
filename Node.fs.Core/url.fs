@@ -48,28 +48,3 @@ type url = class
     member self.resolve(fromUrl, toUrl) =
         raise (System.NotImplementedException())
 end
-
-module tests = 
-
-    let check(x, y)=
-        if x = y then
-            ()
-        else
-            printfn "**%s** = **%s**\t\tFalse" x y
-
-    do
-        
-        let u = new url()
-        let parsedUrl = u.parse "http://user:pass@host.com:8080/p/a/t/h?query=string#hash"
-
-        check(parsedUrl.href, "http://user:pass@host.com:8080/p/a/t/h?query=string#hash")
-        check(parsedUrl.protocol, "http:")
-        check(parsedUrl.host, "host.com:8080")
-        check(parsedUrl.auth, "user:pass")
-        check(parsedUrl.hostname, "host.com")
-        check(parsedUrl.port, "8080")
-        check(parsedUrl.pathname, "/p/a/t/h")
-        check(parsedUrl.search, "?query=string")
-        check(parsedUrl.path, "/p/a/t/h?query=string")
-        check(parsedUrl.query, "query=string")
-        check(parsedUrl.hash, "#hash")

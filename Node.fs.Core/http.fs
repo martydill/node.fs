@@ -1,6 +1,5 @@
 ﻿namespace Node.fs.Core.Http
 
-
 type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
     
     let req = httpListenerRequest
