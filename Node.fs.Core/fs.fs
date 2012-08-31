@@ -165,11 +165,17 @@ type fs = class
     member self.readSync(fd, buffer, offset, length, position) = 
         raise (System.NotImplementedException())
 
-    member self.readFile(filename, ?encoding, ?callback) = 
-        raise (System.NotImplementedException())
+    member self.readFile(filename, callback) = 
 
-    member self.readFileSync(filename, ?encoding) = 
-        raise (System.NotImplementedException())
+         System.Threading.Tasks.Task.Factory.StartNew(fun () ->
+            let bytes = self.readFileSync(filename)
+            callback bytes
+        )
+        
+
+    member self.readFileSync(filename) = 
+        let bytes = System.IO.File.ReadAllBytes filename
+        bytes
 
     member self.writeFile(filename, data, ?encoding, ?callback) = 
         raise (System.NotImplementedException())

@@ -1,4 +1,5 @@
-﻿namespace FsTests
+﻿module Test.``fs - exists``
+
 open Node.fs.Core.fs
 open Xunit
 open FsUnit.Xunit
@@ -11,7 +12,7 @@ type ``Given a file that exists`` ()=
     [<Fact>]
     let ``existsSync should return true`` ()=
         let exists = fs.existsSync path
-        exists |> should equal true
+        exists |> should equal true 
 
     [<Fact>]
     let ``exists should pass true to the callback`` ()=
