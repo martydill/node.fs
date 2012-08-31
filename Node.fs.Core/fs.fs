@@ -1,4 +1,5 @@
 ﻿namespace Node.fs.Core.fs
+open System.IO
 
 type fs = class
    
@@ -166,16 +167,30 @@ type fs = class
         raise (System.NotImplementedException())
 
     member self.readFile(filename, callback) = 
-
          System.Threading.Tasks.Task.Factory.StartNew(fun () ->
             let bytes = self.readFileSync(filename)
             callback bytes
         )
-        
+
+    member self.readFile(filename, encoding, callback) = 
+         System.Threading.Tasks.Task.Factory.StartNew(fun () ->
+            let bytes = self.readFileSync(filename, encoding)
+            callback bytes
+        )
 
     member self.readFileSync(filename) = 
         let bytes = System.IO.File.ReadAllBytes filename
         bytes
+
+    member self.readFileSync(filename, encoding) = 
+        let enc = self.getEncoding encoding
+        let data = File.ReadAllText(filename, enc)
+        data
+        
+    member self.getEncoding enc : System.Text.Encoding = 
+        match enc with
+        | "utf8" -> upcast new System.Text.UTF8Encoding()
+        | _ -> upcast new System.Text.ASCIIEncoding()
 
     member self.writeFile(filename, data, ?encoding, ?callback) = 
         raise (System.NotImplementedException())

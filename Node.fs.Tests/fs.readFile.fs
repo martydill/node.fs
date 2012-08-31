@@ -20,11 +20,22 @@ type ``Given a file that exists`` ()=
         data.SequenceEqual(bytes) |> should equal true
 
     [<Fact>]
+    let ``readFileSync with utf8 encoding should return its data as a string`` ()=
+        let data = fs.readFileSync(path, "utf8")
+        data |> should equal contents
+    
+    [<Fact>]
     let ``readFile with no encoding should pass its data to the callback`` ()=
         fs.readFile(path, fun data ->
             data.SequenceEqual(bytes) |> should equal true
         )
        
+    [<Fact>]
+    let ``readFile with utf8 encoding should pass its string to the callback`` ()=
+        fs.readFile(path, "utf8", fun data ->
+            data |> should equal contents
+        )
+
 
     interface System.IDisposable with
         member x.Dispose() = 
