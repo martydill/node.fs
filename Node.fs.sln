@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Node.fs.Core", "Node.fs.Core\Node.fs.Core.fsproj", "{54569B40-8BE0-4089-BB82-9383AC7B4CC3}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Node.fs.Tests", "Node.fs.Tests\Node.fs.Tests.fsproj", "{54A5C38C-DFB9-46AC-A1DB-57EE1A73401D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{54569B40-8BE0-4089-BB82-9383AC7B4CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54569B40-8BE0-4089-BB82-9383AC7B4CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54569B40-8BE0-4089-BB82-9383AC7B4CC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54A5C38C-DFB9-46AC-A1DB-57EE1A73401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A5C38C-DFB9-46AC-A1DB-57EE1A73401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A5C38C-DFB9-46AC-A1DB-57EE1A73401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A5C38C-DFB9-46AC-A1DB-57EE1A73401D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
