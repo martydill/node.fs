@@ -1,6 +1,8 @@
-﻿module fs
+﻿namespace Node.fs.Core.fs
 
 type fs = class
+   
+    new() = {}
 
     member self.rename(oldPath, newPath, ?callback) = 
         raise (System.NotImplementedException())
@@ -194,10 +196,15 @@ type fs = class
     member self.watch(filename, ?options, ?listener) = 
         raise (System.NotImplementedException())
 
-    member self.exists(path, ?callback) = 
-        raise (System.NotImplementedException())
+    member self.exists(path, callback) =
+
+        System.Threading.Tasks.Task.Factory.StartNew(fun () ->
+            let exists = self.existsSync path;
+            callback exists
+        )
+        
 
     member self.existsSync(path) = 
-        raise (System.NotImplementedException())
+        System.IO.File.Exists(path)
 
 end

@@ -1,4 +1,4 @@
-namespace Tests
+namespace UrlTests
 open Node.fs.Core.Url
 open Xunit
 open FsUnit.Xunit
