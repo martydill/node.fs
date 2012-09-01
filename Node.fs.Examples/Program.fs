@@ -1,5 +1,4 @@
-﻿module Program
-
+﻿
 open Node.fs.Core.Http
 open Node.fs.Core.Console
 open Node.fs.Core.Url
