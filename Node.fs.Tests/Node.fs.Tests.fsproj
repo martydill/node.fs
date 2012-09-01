@@ -62,8 +62,8 @@
     <Compile Include="url.tests.fs" />
     <None Include="app.config" />
     <Compile Include="fs.readFile.fs" />
-    <Compile Include="fs.exists.fs" />
     <Compile Include="fs.read.fs" />
+    <Compile Include="fs.exists.fs" />
     <Compile Include="fs.open.fs" />
     <Compile Include="fs.close.fs" />
   </ItemGroup>
