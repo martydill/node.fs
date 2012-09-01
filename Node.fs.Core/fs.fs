@@ -141,7 +141,7 @@ type fs = class
     member self.getModeAndAccess mode = 
         match mode with
         | "r" -> (FileMode.Open, FileAccess.Read)
-        | "w" -> (FileMode.Open, FileAccess.Write)
+        | "w" -> (FileMode.OpenOrCreate, FileAccess.Write)
         | "r+" -> (FileMode.Open, FileAccess.ReadWrite)
         | _ -> (FileMode.Open, FileAccess.Read)
 
