@@ -125,10 +125,13 @@ type fs = class
         raise (System.NotImplementedException())
 
     member self.close(fd, ?callback) = 
-        raise (System.NotImplementedException())
+         System.Threading.Tasks.Task.Factory.StartNew(fun () ->
+            self.closeSync fd
+            callback.Value ()
+        )
 
-    member self.closeSync(fd) = 
-        raise (System.NotImplementedException())
+    member self.closeSync(fd:System.IO.FileStream) = 
+        fd.Close()
 
     member self.fopen(path, flags, ?mode, ?callback) = 
         raise (System.NotImplementedException())
