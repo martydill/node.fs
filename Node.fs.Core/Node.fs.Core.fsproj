@@ -41,6 +41,7 @@
     <Compile Include="url.fs" />
     <Compile Include="fs.fs" />
     <None Include="app.config" />
+    <Compile Include="net.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
