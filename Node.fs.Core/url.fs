@@ -23,7 +23,6 @@ type url = class
     new() = {}
 
     member self.parse(urlString, ?parseQueryString, ?slashesDenoteHost)  = 
-        printfn "%s" urlString
         
         let theParsedUrl = new System.Uri(urlString)
         
