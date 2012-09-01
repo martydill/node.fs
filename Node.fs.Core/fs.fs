@@ -133,9 +133,19 @@ type fs = class
     member self.fopen(path, flags, ?mode, ?callback) = 
         raise (System.NotImplementedException())
 
-    member self.openSync(path, flags, ?mode) = 
-        raise (System.NotImplementedException())
+    member self.openSync(path:string, flags, ?mode) = 
+        let mode, access = self.getModeAndAccess flags
 
+        new FileStream(path, mode, access)
+
+    member self.getModeAndAccess mode = 
+        match mode with
+        | "r" -> (FileMode.Open, FileAccess.Read)
+        | "w" -> (FileMode.Open, FileAccess.Write)
+        | "r+" -> (FileMode.Open, FileAccess.ReadWrite)
+        | _ -> (FileMode.Open, FileAccess.Read)
+
+  
     member self.utimes(path, atime, mtime, ?callback) = 
         raise (System.NotImplementedException())
 
