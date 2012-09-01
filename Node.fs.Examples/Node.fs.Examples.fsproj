@@ -45,8 +45,9 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.fs" />
     <None Include="App.config" />
+    <Compile Include="http.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Node.fs.Core\Node.fs.Core.fsproj">
