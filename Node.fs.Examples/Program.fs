@@ -1,11 +1,12 @@
-﻿
-open httpDemo
+﻿namespace Node.fs.Examples
+
+open tcpDemo
 
 module Main =
     open System
         [<EntryPoint>]
         let main args =
-            httpDemo.run
+            tcpDemo.run
             Console.ReadLine() |> ignore
             0
 
