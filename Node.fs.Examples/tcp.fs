@@ -13,12 +13,10 @@ let run =
 
     // Setup a tcp server
     let server = net.createServer(fun socket ->
-     
+
         // Every time someone connects, tell them hello and then close the connection.
-        socket.addListener("connect", function () ->
-            console.log "Connection from %s" socket.remoteAddress
-            //socket.end("Hello World\n")
-      )
+        console.log "Connection from %s" socket.remoteAddress
+        socket.endSocket("Hello World\n")
     )
 
     // Fire up the server bound to port 7000 on localhost

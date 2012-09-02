@@ -1,5 +1,6 @@
 ﻿namespace Node.fs.Core.fs
 open System.IO
+open helpers
 
 type fs = class
    
@@ -199,14 +200,9 @@ type fs = class
         bytes
 
     member self.readFileSync(filename, encoding) = 
-        let enc = self.getEncoding encoding
+        let enc = helpers.getEncoding encoding
         let data = File.ReadAllText(filename, enc)
         data
-        
-    member self.getEncoding enc : System.Text.Encoding = 
-        match enc with
-        | "utf8" -> upcast new System.Text.UTF8Encoding()
-        | _ -> upcast new System.Text.ASCIIEncoding()
 
     member self.writeFile(filename, data, ?encoding, ?callback) = 
         raise (System.NotImplementedException())

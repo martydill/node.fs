@@ -1,15 +1,22 @@
 ﻿namespace Node.fs.Core.net
 
-type socket = class
+type socket(theSocket:System.Net.Sockets.Socket) = class
     
-    member self.addListener(eventName, callback) =
-        ()
+    member self.write(data, ?encoding0, ?callback) = 
+       
+        let encoding = defaultArg encoding0 "utf8"
 
-    member self.endSocket message =    // TODO end
-        ()
+        // TODO async
+        let bytes = helpers.getBytes(data, encoding)
+        theSocket.Send(bytes) |> ignore
 
+    member self.endSocket(data, ?encoding:string) =    // TODO end
+        self.write(data, encoding)
+        theSocket.Close |> ignore
+        
     member self.remoteAddress = 
-        ""
+        theSocket.RemoteEndPoint.ToString()
+
 end
 
 type netServer(requestHandlerFunction:(socket -> unit)) = class
@@ -20,12 +27,21 @@ type netServer(requestHandlerFunction:(socket -> unit)) = class
     member self.listen(port:int, ?host, ?backlog, ?listeningListener) =
        listener <- new System.Net.Sockets.TcpListener(port) // TODO
        listener.Start()
-    
+       Async.Start(self.listenImpl(listener))
+
     member self.close = 
         listener.Stop()
 
     member self.addHandler = 
         ()
+
+    member self.listenImpl(listener) = async {
+
+        while true do
+            let! context = Async.FromBeginEnd(listener.BeginAcceptTcpClient, listener.EndAcceptTcpClient)
+            let socket = new socket(context.Client)
+            requestHandlerFunction socket
+        }
 
 end
 
