@@ -49,6 +49,7 @@
     <Compile Include="http.fs" />
     <Compile Include="tcp.fs" />
     <Compile Include="Program.fs" />
+    <Compile Include="tcpChat.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Node.fs\Node.fs.fsproj">
