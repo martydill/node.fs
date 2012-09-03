@@ -211,11 +211,11 @@ type fs = class
         raise (System.NotImplementedException())
 
     member self.appendFile(filename, data, ?encoding0, ?callback) = 
-        let encoding = defaultArg encoding0 "utf8"
+        let encoding = defaultArg encoding0 Utf8
         raise (System.NotImplementedException())
 
     member self.appendFileSync(filename, data, ?encoding0) = 
-        let encoding = defaultArg encoding0 "utf8"
+        let encoding = defaultArg encoding0 Utf8
         raise (System.NotImplementedException())
 
     member self.watchFile(filename, listener) = 

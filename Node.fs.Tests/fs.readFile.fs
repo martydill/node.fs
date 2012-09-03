@@ -4,6 +4,7 @@ open Node.fs.Core.fs
 open Xunit
 open FsUnit.Xunit
 open System.Linq
+open helpers
 
 type ``Given a file that exists`` ()=
 
@@ -21,7 +22,7 @@ type ``Given a file that exists`` ()=
 
     [<Fact>]
     let ``readFileSync with utf8 encoding should return its data as a string`` ()=
-        let data = fs.readFileSync(path, "utf8")
+        let data = fs.readFileSync(path, Utf8)
         data |> should equal contents
     
     [<Fact>]
@@ -32,7 +33,7 @@ type ``Given a file that exists`` ()=
        
     [<Fact>]
     let ``readFile with utf8 encoding should pass its string to the callback`` ()=
-        fs.readFile(path, "utf8", fun data ->
+        fs.readFile(path, Utf8, fun data ->
             data |> should equal contents
         )
 
