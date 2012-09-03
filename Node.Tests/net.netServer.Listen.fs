@@ -1,6 +1,6 @@
 ﻿module Test.``netServer - listen``
 
-open Node.fs.Core.net
+open Node.net
 open Xunit
 open FsUnit.Xunit
 open System.Linq

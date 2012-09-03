@@ -1,6 +1,6 @@
 ﻿module Test.``fs - readFile``
 
-open Node.fs.Core.fs
+open Node.fs
 open Xunit
 open FsUnit.Xunit
 open System.Linq

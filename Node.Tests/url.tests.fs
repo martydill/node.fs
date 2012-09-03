@@ -1,5 +1,5 @@
 namespace UrlTests
-open Node.fs.Core.Url
+open Node.Url
 open Xunit
 open FsUnit.Xunit
 

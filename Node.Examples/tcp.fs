@@ -1,7 +1,7 @@
 ﻿module tcpDemo
 
-open Node.fs.Core.net
-open Node.fs.Core.Console
+open Node.net
+open Node.Console
 
 // http://howtonode.org/hello-node
 

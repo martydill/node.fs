@@ -1,8 +1,8 @@
 ﻿module httpDemo
 
-open Node.fs.Core.Http
-open Node.fs.Core.Console
-open Node.fs.Core.Url
+open Node.Http
+open Node.Console
+open Node.Url
 
 let run = 
     

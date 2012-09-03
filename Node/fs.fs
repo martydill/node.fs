@@ -1,4 +1,4 @@
-﻿namespace Node.fs.Core.fs
+﻿namespace Node.fs
 open System.IO
 open node
 

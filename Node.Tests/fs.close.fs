@@ -1,7 +1,7 @@
 ﻿module Test.``fs - close``
 
 open System.IO
-open Node.fs.Core.fs
+open Node.fs
 open Xunit
 open FsUnit.Xunit
 open System.Linq

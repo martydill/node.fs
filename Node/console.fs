@@ -1,4 +1,4 @@
-﻿namespace Node.fs.Core.Console
+﻿namespace Node.Console
 
 open System
 open System.Collections.Generic

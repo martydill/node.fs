@@ -1,4 +1,4 @@
-﻿namespace Node.fs.Core.Url
+﻿namespace Node.Url
 
 
 type parsedUrl = {

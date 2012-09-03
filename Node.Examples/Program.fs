@@ -1,4 +1,4 @@
-﻿namespace Node.fs.Examples
+﻿namespace Node.Examples
 
 open tcpDemo
 

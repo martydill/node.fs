@@ -1,4 +1,4 @@
-﻿namespace Node.fs.Core.net
+﻿namespace Node.net
 open node
 
 type socket(theSocket:System.Net.Sockets.Socket) = class

@@ -1,6 +1,6 @@
 ﻿module Test.``net - createServer``
 
-open Node.fs.Core.net
+open Node.net
 open Xunit
 open FsUnit.Xunit
 

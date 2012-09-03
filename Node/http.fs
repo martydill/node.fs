@@ -1,4 +1,4 @@
-﻿namespace Node.fs.Core.Http
+﻿namespace Node.Http
 
 type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
     
