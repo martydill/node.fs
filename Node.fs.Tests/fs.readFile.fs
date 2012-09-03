@@ -4,7 +4,7 @@ open Node.fs.Core.fs
 open Xunit
 open FsUnit.Xunit
 open System.Linq
-open helpers
+open node
 
 type ``Given a file that exists`` ()=
 

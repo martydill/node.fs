@@ -1,5 +1,5 @@
 ﻿namespace Node.fs.Core.net
-open helpers
+open node
 
 type socket(theSocket:System.Net.Sockets.Socket) = class
     
@@ -7,7 +7,7 @@ type socket(theSocket:System.Net.Sockets.Socket) = class
         let encoding = defaultArg encoding0 Utf8
 
         // TODO async
-        let bytes = helpers.getBytes(data, encoding)
+        let bytes = node.getBytes(data, encoding)
         theSocket.Send(bytes) |> ignore
 
     member self.endSocket(data, ?encoding) =    // TODO end

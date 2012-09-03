@@ -1,4 +1,4 @@
-﻿module helpers
+﻿module node
 
 type Encoding = Utf8 | Ascii
 
@@ -12,3 +12,4 @@ let getBytes(string:string, enc) =
     match enc with 
     | Utf8 -> System.Text.Encoding.UTF8.GetBytes(string)
     | Ascii -> System.Text.Encoding.ASCII.GetBytes(string)
+

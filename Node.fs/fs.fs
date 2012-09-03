@@ -1,6 +1,6 @@
 ﻿namespace Node.fs.Core.fs
 open System.IO
-open helpers
+open node
 
 type fs = class
    
@@ -200,7 +200,7 @@ type fs = class
         bytes
 
     member self.readFileSync(filename, encoding) = 
-        let enc = helpers.getEncoding encoding
+        let enc = node.getEncoding encoding
         let data = File.ReadAllText(filename, enc)
         data
 
