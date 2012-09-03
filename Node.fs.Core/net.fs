@@ -4,16 +4,14 @@ open helpers
 type socket(theSocket:System.Net.Sockets.Socket) = class
     
     member self.write(data, ?encoding0, ?callback) = 
-       
         let encoding = defaultArg encoding0 Utf8
 
         // TODO async
         let bytes = helpers.getBytes(data, encoding)
         theSocket.Send(bytes) |> ignore
 
-    member self.endSocket(data, ?encoding:string) =    // TODO end
-        self.write(data)
-        let z = encoding
+    member self.endSocket(data, ?encoding) =    // TODO end
+        self.write(data, ?encoding0 = encoding) // http://stackoverflow.com/a/7095907/184630
         theSocket.Close |> ignore
         
     member self.remoteAddress = 
