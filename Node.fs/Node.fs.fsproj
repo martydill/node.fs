@@ -10,7 +10,7 @@
     <RootNamespace>Library1</RootNamespace>
     <AssemblyName>Node.fs</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <Name>Node.fs.Core</Name>
+    <Name>Node.fs</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
