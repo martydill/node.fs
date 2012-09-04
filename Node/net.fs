@@ -14,8 +14,14 @@ type socket(theSocket:System.Net.Sockets.Socket) = class
         self.write(data, ?encoding0 = encoding) // http://stackoverflow.com/a/7095907/184630
         theSocket.Close |> ignore
         
+    member private self.remoteEndPoint = 
+        theSocket.RemoteEndPoint :?> System.Net.IPEndPoint
+
     member self.remoteAddress = 
-        theSocket.RemoteEndPoint.ToString()
+        self.remoteEndPoint.Address.ToString()
+  
+    member self.remotePort = 
+        self.remoteEndPoint.Port.ToString()
 
 end
 
