@@ -48,6 +48,7 @@
     <None Include="App.config" />
     <Compile Include="http.fs" />
     <Compile Include="tcp.fs" />
+    <Compile Include="tcpChat.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

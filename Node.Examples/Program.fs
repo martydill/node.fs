@@ -1,12 +1,12 @@
 ﻿namespace Node.Examples
 
-open tcpDemo
+open tcpChat
 
 module Main =
     open System
         [<EntryPoint>]
         let main args =
-            tcpDemo.run
+            tcpChat.run
             Console.ReadLine() |> ignore
             0
 
