@@ -48,13 +48,12 @@ let run =
             broadcast(socketWrapper.name + "> " + data, socketWrapper)
         )
 
-//
-//      // Remove the client from the list when it leaves
-//      socket.on('end', function () {
-//        clients.splice(clients.indexOf(socket), 1);
-//        broadcast(socket.name + " left the chat.\n");
-//      });
-//  
+        // Remove the client from the list when it leaves
+        socket.addListener("end", fun data -> 
+            clients.Value <- clients.Value |> List.filter(fun x -> x <> socketWrapper)
+            broadcast(socketWrapper.name + " left the chat.\n", socketWrapper)
+        )
+
 //        // Log it to the server output too
 //        process.stdout.write(message)
 //      }

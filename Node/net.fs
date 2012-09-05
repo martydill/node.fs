@@ -39,6 +39,7 @@ type socket(theSocket:System.Net.Sockets.Socket) = class
             let str = System.Text.Encoding.UTF8.GetString(data, 0, completedArgs.BytesTransferred)
             if !count > 0 then
                 dataHandler str
+                Async.Start(self.asyncRead)
             else
                 endHandler ""
         )
@@ -60,6 +61,7 @@ end
 
 type netServer(requestHandlerFunction:(socket -> unit)) = class
      
+    let mutable connList = []
     let mutable listener:System.Net.Sockets.TcpListener = null
 
      // TODO - other parameters
@@ -79,6 +81,7 @@ type netServer(requestHandlerFunction:(socket -> unit)) = class
         while true do
             let! context = Async.FromBeginEnd(listener.BeginAcceptTcpClient, listener.EndAcceptTcpClient)
             let socket = new socket(context.Client)
+            connList <- connList @ [socket]
             requestHandlerFunction socket
         }
 
