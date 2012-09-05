@@ -4,6 +4,13 @@ module tcpChat
 open Node.net
 open Node.Console
 
+type mySocket(socket, name) = class
+    member self.name = 
+        name
+    member self.socket =
+        socket
+end
+
 let run = 
 
     // Load the TCP Library
@@ -11,20 +18,30 @@ let run =
     let console = new console()
 
     // Keep track of the chat clients
-    //let mutable clients = []
+    let clients = ref List.Empty
+
+   
 
     // Start a TCP Server
     net.createServer(fun socket ->
-        ()
-      // Identify this client
-      //socket.name = socket.remoteAddress + ":" + socket.remotePort 
 
-      // Put this new client in the list
-      //clients <- clients @ [socket]
+        // Identify this client        
+        let socketWrapper = new mySocket(socket, socket.remoteAddress + ":" + socket.remotePort)
 
-      // Send a nice welcome message and announce
-      //socket.write("Welcome " + socket.name + "\n");
-      //broadcast(socket.name + " joined the chat\n", socket);
+        // Put this new client in the list
+        clients.Value <- socketWrapper :: clients.Value
+        
+        // Send a nice welcome message and announce
+        socket.write("Welcome " + socketWrapper.name + "\n");
+
+        // Send a message to all clients
+        let broadcast(message, sender) =
+            clients.Value 
+                |> List.filter (fun i -> i <> sender)
+                |> List.map (fun i -> i.socket.write message)
+                |> ignore
+
+        broadcast(socketWrapper.name + " joined the chat\n", socketWrapper);
 
 //      // Handle incoming messages from clients.
 //      socket.on('data', function (data) {
@@ -37,16 +54,13 @@ let run =
 //        broadcast(socket.name + " left the chat.\n");
 //      });
 //  
-//      // Send a message to all clients
-//      function broadcast(message, sender) {
-//        clients.forEach(function (client) {
-//          // Don't want to send it to sender
-//          if (client === sender) return;
-//          client.write(message);
-//        });
 //        // Log it to the server output too
 //        process.stdout.write(message)
 //      }
+
+      
+  
+        ()
 
     ).listen(5000)
 
