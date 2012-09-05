@@ -41,12 +41,13 @@ let run =
                 |> List.map (fun i -> i.socket.write message)
                 |> ignore
 
-        broadcast(socketWrapper.name + " joined the chat\n", socketWrapper);
+        broadcast(socketWrapper.name + " joined the chat\n", socketWrapper)
 
-//      // Handle incoming messages from clients.
-//      socket.on('data', function (data) {
-//        broadcast(socket.name + "> " + data, socket);
-//      });
+        // Handle incoming messages from clients.
+        socket.addListener("data", fun data ->
+            broadcast(socketWrapper.name + "> " + data, socketWrapper)
+        )
+
 //
 //      // Remove the client from the list when it leaves
 //      socket.on('end', function () {
@@ -57,10 +58,6 @@ let run =
 //        // Log it to the server output too
 //        process.stdout.write(message)
 //      }
-
-      
-  
-        ()
 
     ).listen(5000)
 

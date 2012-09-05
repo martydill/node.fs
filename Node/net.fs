@@ -3,6 +3,10 @@ open node
 
 type socket(theSocket:System.Net.Sockets.Socket) = class
     
+    let mutable dataHandler = fun (data:string) -> ()
+    let mutable endHandler = fun (data:string) -> ()
+    let mutable closeHandler = fun (data:string) -> ()
+
     member self.write(data, ?encoding0, ?callback) = 
         let encoding = defaultArg encoding0 Utf8
 
@@ -22,6 +26,35 @@ type socket(theSocket:System.Net.Sockets.Socket) = class
   
     member self.remotePort = 
         self.remoteEndPoint.Port.ToString()
+
+    member private self.asyncRead = async {
+
+        let data = Array.zeroCreate 1024
+        let count = ref 1
+
+        let mutable args = new System.Net.Sockets.SocketAsyncEventArgs()
+        args.SetBuffer(data, 0, 1024)
+        args.Completed.Add(fun completedArgs ->
+            count := completedArgs.BytesTransferred
+            let str = System.Text.Encoding.UTF8.GetString(data, 0, completedArgs.BytesTransferred)
+            if !count > 0 then
+                dataHandler str
+            else
+                endHandler ""
+        )
+
+        theSocket.ReceiveAsync(args) |> ignore
+    }   
+
+    member self.addListener(eventName, func) = 
+        match eventName with
+        | "data" ->
+             dataHandler <- func
+             Async.Start(self.asyncRead)
+        | "end" -> endHandler <- func
+        | "close" -> closeHandler <- func
+        | _ -> raise (System.ArgumentException("Unknown event name " + eventName))
+
 
 end
 

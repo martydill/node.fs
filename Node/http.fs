@@ -8,8 +8,7 @@ type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
     let mutable endHandler = fun (data:string) -> ()
     let mutable closeHandler = fun (data:string) -> ()
 
-    
-    member self.asyncRead = async {
+    member private self.asyncRead = async {
 
         let data = Array.zeroCreate 1024
         
