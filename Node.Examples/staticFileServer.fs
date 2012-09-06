@@ -7,6 +7,7 @@ open Node.Url
 open Node.fs
 open Node.sys
 open Node.path
+open node
 
 let run = 
 
@@ -19,9 +20,9 @@ let run =
     my_http.createServer(fun (request,response) ->
         
         let my_path = url.parse(request.url).pathname
+        let full_path = path.join(proc.cwd, my_path)
         ()
 
-        //var full_path = path.join(process.cwd(),my_path)
 //	    path.exists(full_path,function(exists){
 //		    if(!exists){
 //			    response.writeHeader(404, {"Content-Type": "text/plain"})
