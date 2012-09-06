@@ -52,8 +52,9 @@ type httpServerResponse = class
         let bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(data)
         self.resp.OutputStream.Write(bytes, 0, bytes.Length)
 
-    member self.writeHead (statusCode:int, headers:System.Collections.Generic.IDictionary<string, string>) = 
-        
+    member self.writeHead (statusCode:int, ?headers0:System.Collections.Generic.IDictionary<string, string>) = 
+        let headers = defaultArg headers0 (dict[])
+
         for key in headers.Keys do
             match headers.[key] with
             | "Content-Type" -> self.resp.ContentType <- headers.[key]

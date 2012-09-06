@@ -39,7 +39,7 @@ let run =
                         response.endResponse
     
                     else
-                        response.writeHead(200, dict[]) // TODO - second parameter optional
+                        response.writeHead(200)
                         response.write(file) // TODO - binary encoding
                         response.endResponse
                 ) |> ignore
