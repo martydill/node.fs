@@ -49,6 +49,7 @@
     <Compile Include="http.fs" />
     <Compile Include="tcp.fs" />
     <Compile Include="tcpChat.fs" />
+    <Compile Include="staticFileServer.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

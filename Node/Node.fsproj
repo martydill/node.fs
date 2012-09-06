@@ -43,6 +43,8 @@
     <Compile Include="url.fs" />
     <Compile Include="fs.fs" />
     <Compile Include="net.fs" />
+    <Compile Include="sys.fs" />
+    <Compile Include="path.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
