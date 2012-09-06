@@ -69,6 +69,7 @@
     <Compile Include="fs.close.fs" />
     <Compile Include="net.createServer.fs" />
     <Compile Include="net.netServer.Listen.fs" />
+    <Compile Include="process.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Node\Node.fsproj">

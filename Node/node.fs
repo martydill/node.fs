@@ -1,5 +1,5 @@
-﻿module node
-
+﻿module node   
+   
 type Encoding = Utf8 | Ascii
 
 let getEncoding enc : System.Text.Encoding = 
@@ -13,3 +13,7 @@ let getBytes(string:string, enc) =
     | Utf8 -> System.Text.Encoding.UTF8.GetBytes(string)
     | Ascii -> System.Text.Encoding.ASCII.GetBytes(string)
 
+
+let proc = // NAMING: should be process
+    new node_process.proc()
+        

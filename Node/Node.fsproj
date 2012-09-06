@@ -37,6 +37,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="process.fs" />
     <Compile Include="node.fs" />
     <Compile Include="console.fs" />
     <Compile Include="http.fs" />

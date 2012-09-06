@@ -17,9 +17,11 @@ let run =
     let filesys = new fs()
 
     my_http.createServer(fun (request,response) ->
+        
+        let my_path = url.parse(request.url).pathname
         ()
-        // var my_path = url.parse(request.url).pathname
-        // var full_path = path.join(process.cwd(),my_path)
+
+        //var full_path = path.join(process.cwd(),my_path)
 //	    path.exists(full_path,function(exists){
 //		    if(!exists){
 //			    response.writeHeader(404, {"Content-Type": "text/plain"})
