@@ -17,33 +17,34 @@ let run =
     let url = new url()
     let filesys = new fs()
 
-    my_http.createServer(fun (request,response) ->
+    my_http.createServer(fun (request, response) ->
         
         let my_path = url.parse(request.url).pathname
         let full_path = path.join(proc.cwd, my_path)
-        ()
 
-//	    path.exists(full_path,function(exists){
-//		    if(!exists){
-//			    response.writeHeader(404, {"Content-Type": "text/plain"})
-//			    response.write("404 Not Found\n")
-//			    response.end()
-//		    }
-//		    else{
-//			    filesys.readFile(full_path, "binary", function(err, file) {
-//			         if(err) {
-//			             response.writeHeader(500, {"Content-Type": "text/plain"})
-//			             response.write(err + "\n")
-//			             response.end()  
-//
-//			         }
-//				     else{
-//					    response.writeHeader(200)
-//			            response.write(file, "binary")
-//			            response.end()
-//				    }
-//
-//			    })
-//	    )
+        filesys.exists(full_path, fun exists ->
+            
+            if not exists then
+                response.writeHead(404, dict["Content-Type", "text/plain"])
+                response.write("404 Not Found\n")
+                response.endResponse
+        
+            else
+
+                filesys.readFile(full_path, Utf8, fun file -> // TODO  - error parameter, binary encoding
+                    let err = null
+                    if err <> null then
+                        response.writeHead(500, dict["Content-Type", "text/plain"])
+                        response.write(err + "\n")
+                        response.endResponse
+    
+                    else
+                        response.writeHead(200, dict[]) // TODO - second parameter optional
+                        response.write(file) // TODO - binary encoding
+                        response.endResponse
+                ) |> ignore
+        ) |> ignore
+
     ).listen(8080)
+
     //sys.puts("Server Running on 8080")
