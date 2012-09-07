@@ -1,12 +1,12 @@
 ﻿namespace Node.Examples
 
-open tcpChat
+open staticFileServer
 
 module Main =
     open System
         [<EntryPoint>]
         let main args =
-            tcpChat.run
+            staticFileServer.run
             Console.ReadLine() |> ignore
             0
 

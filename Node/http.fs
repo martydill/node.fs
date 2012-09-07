@@ -1,5 +1,7 @@
 ﻿namespace Node.Http
 
+open node
+
 type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
     
     let req = httpListenerRequest
@@ -48,8 +50,12 @@ type httpServerResponse = class
     member self.endResponse = 
         self.resp.Close()
 
-    member self.write (data:string) = 
-        let bytes = System.Text.ASCIIEncoding.ASCII.GetBytes(data)
+    member self.write data =
+        self.resp.OutputStream.Write(data, 0, 0)
+
+    member self.write (data:string, ?encoding0) = 
+        let encoding = defaultArg encoding0 Utf8
+        let bytes = node.getBytes(data, encoding)
         self.resp.OutputStream.Write(bytes, 0, bytes.Length)
 
     member self.writeHead (statusCode:int, ?headers0:System.Collections.Generic.IDictionary<string, string>) = 

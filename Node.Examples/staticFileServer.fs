@@ -31,7 +31,7 @@ let run =
         
             else
 
-                filesys.readFile(full_path, Utf8, fun file -> // TODO  - error parameter, binary encoding
+                filesys.readFile(full_path, fun bytes -> // TODO  - error parameter
                     let err = null
                     if err <> null then
                         response.writeHead(500, dict["Content-Type", "text/plain"])
@@ -40,7 +40,7 @@ let run =
     
                     else
                         response.writeHead(200)
-                        response.write(file) // TODO - binary encoding
+                        response.write(bytes)
                         response.endResponse
                 ) |> ignore
         ) |> ignore
