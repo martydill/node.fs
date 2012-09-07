@@ -18,7 +18,7 @@ let run =
     let filesys = new fs()
 
     my_http.createServer(fun (request, response) ->
-        
+            
         let my_path = url.parse(request.url).pathname
         let full_path = path.join(proc.cwd, my_path)
 
@@ -31,7 +31,7 @@ let run =
         
             else
 
-                filesys.readFile(full_path, fun bytes -> // TODO  - error parameter
+                filesys.readFile(full_path, fun(bytes, error) -> // TODO  - error parameter
                     let err = null
                     if err <> null then
                         response.writeHead(500, dict["Content-Type", "text/plain"])

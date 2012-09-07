@@ -27,13 +27,19 @@ type ``Given a file that exists`` ()=
     
     [<Fact>]
     let ``readFile with no encoding should pass its data to the callback`` ()=
-        fs.readFile(path, fun data ->
+        fs.readFile(path, fun(data, error) ->
             data.SequenceEqual(bytes) |> should equal true
         )
-       
+
+    [<Fact>]
+    let ``readFile should pass a null error to the callback`` ()=
+        fs.readFile(path, fun(data, error) ->
+            error |> should equal null
+        )
+
     [<Fact>]
     let ``readFile with utf8 encoding should pass its string to the callback`` ()=
-        fs.readFile(path, Utf8, fun data ->
+        fs.readFile(path, Utf8, fun(data, error) ->
             data |> should equal contents
         )
 
@@ -41,3 +47,22 @@ type ``Given a file that exists`` ()=
     interface System.IDisposable with
         member x.Dispose() = 
             System.IO.File.Delete path
+
+            
+type ``Given a file that doesn't exist`` ()=
+
+    let fs = new fs()
+    let path = "nonexistent.file"
+
+    [<Fact>]
+    let ``readFile should pass null data to the callback`` ()=
+        fs.readFile(path, Utf8, fun(data, error) ->
+            data |> should be Null
+        )
+
+    
+    [<Fact>]
+    let ``readFile should pass a FileNotFoundException as the error to the callback`` ()=
+        fs.readFile(path, Utf8, fun(data, error) ->
+            error |> should be ofExactType<System.IO.FileNotFoundException>
+        )

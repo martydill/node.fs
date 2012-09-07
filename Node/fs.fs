@@ -185,14 +185,27 @@ type fs = class
 
     member self.readFile(filename, callback) = 
          System.Threading.Tasks.Task.Factory.StartNew(fun () ->
-            let bytes = self.readFileSync(filename)
-            callback bytes
+             try
+
+                let bytes = self.readFileSync(filename)
+                try
+                    callback(bytes, null)
+                with 
+                    | _ -> ()   // If the callback throws an exception, we don't want to propagate it to the outer handler, and call the callback again...
+             with
+                | ex -> callback(null, ex)
         )
 
     member self.readFile(filename, encoding, callback) = 
          System.Threading.Tasks.Task.Factory.StartNew(fun () ->
-            let bytes = self.readFileSync(filename, encoding)
-            callback bytes
+            try
+                let bytes = self.readFileSync(filename, encoding)
+                try
+                    callback(bytes, null)
+                with 
+                | _ -> ()   // If the callback throws an exception, we don't want to propagate it to the outer handler, and call the callback again...
+            with
+            | ex -> callback(null, ex)
         )
 
     member self.readFileSync(filename) = 
