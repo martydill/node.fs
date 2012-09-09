@@ -9,7 +9,8 @@ type path = class
         ()
 
     member self.join([<System.ParamArray>] args: string[]) = 
-        let filtered = args |> Seq.filter (fun str -> str <> null) |> Seq.toArray
+        let filtered = args |> Seq.filter (fun str -> str <> null) |> Seq.map self.stripInitialSlashes |> Seq.toArray
+
         System.IO.Path.Combine(filtered)
 
     member self.resolve([<System.ParamArray>] args: string[]) =
@@ -29,5 +30,8 @@ type path = class
 
     member self.sep = 
         ()
+
+    member private self.stripInitialSlashes str:string =
+        str.TrimStart([|'\\';'/'|])
    
 end
