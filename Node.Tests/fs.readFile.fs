@@ -13,7 +13,7 @@ type ``Given a file that exists`` ()=
     let contents = "This is a test"
     let bytes = System.Text.Encoding.UTF8.GetBytes(contents)
     let ignored = System.IO.File.WriteAllBytes(path, bytes)
-
+    let waiter = new System.Threading.AutoResetEvent(false)
     
     [<Fact>]
     let ``readFileSync with no encoding should return its data`` ()=
@@ -27,21 +27,36 @@ type ``Given a file that exists`` ()=
     
     [<Fact>]
     let ``readFile with no encoding should pass its data to the callback`` ()=
+        let isSequenceEqual = ref false
         fs.readFile(path, fun(data, error) ->
-            data.SequenceEqual(bytes) |> should equal true
-        )
+            isSequenceEqual := data.SequenceEqual(bytes) 
+            waiter.Set() |> ignore
+        ) |> ignore
+
+        waiter.WaitOne() |> ignore
+        !isSequenceEqual |> should equal true
 
     [<Fact>]
     let ``readFile should pass a null error to the callback`` ()=
+        let isErrorNull = ref false
         fs.readFile(path, fun(data, error) ->
-            error |> should equal null
-        )
+            isErrorNull := error = null
+            waiter.Set() |> ignore
+        ) |> ignore
+
+        waiter.WaitOne() |> ignore
+        !isErrorNull |> should equal true
 
     [<Fact>]
     let ``readFile with utf8 encoding should pass its string to the callback`` ()=
+        let doesDataEqualContents = ref false
         fs.readFile(path, Utf8, fun(data, error) ->
-            data |> should equal contents
-        )
+            doesDataEqualContents := data = contents
+            waiter.Set() |> ignore
+        ) |> ignore
+
+        waiter.WaitOne() |> ignore
+        !doesDataEqualContents |> should equal true
 
 
     interface System.IDisposable with
@@ -53,16 +68,27 @@ type ``Given a file that doesn't exist`` ()=
 
     let fs = new fs()
     let path = "nonexistent.file"
+    let waiter = new System.Threading.AutoResetEvent(false)
 
     [<Fact>]
     let ``readFile should pass null data to the callback`` ()=
-        fs.readFile(path, Utf8, fun(data, error) ->
-            data |> should be Null
-        )
+        let isDataNull = ref false
+        fs.readFile(path, fun(data, error) ->
+            isDataNull := data = null
+            waiter.Set() |> ignore
+        ) |> ignore
 
+        waiter.WaitOne() |> ignore
+        !isDataNull |> should equal true
     
     [<Fact>]
     let ``readFile should pass a FileNotFoundException as the error to the callback`` ()=
-        fs.readFile(path, Utf8, fun(data, error) ->
-            error |> should be ofExactType<System.IO.FileNotFoundException>
-        )
+        let isErrorAFileNotFoundException = ref false
+        fs.readFile(path, fun(data, error) ->
+            isErrorAFileNotFoundException := error :? System.IO.FileNotFoundException
+            waiter.Set() |> ignore
+        ) |> ignore
+
+        waiter.WaitOne() |> ignore
+        !isErrorAFileNotFoundException |> should equal true
+        
