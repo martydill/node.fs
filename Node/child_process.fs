@@ -2,11 +2,13 @@
 
 open System.Diagnostics
 
-
 type ChildProcess(backingProcess:System.Diagnostics.Process) = class
 
+    member self.pid = 
+        backingProcess.Id
+
     member self.kill = 
-        ()
+        backingProcess.Kill()
 end
 
 
@@ -16,7 +18,11 @@ type child_process = class
     new() = {}
 
     member self.exec(command:string, ?callback) =  // TODO: callback
-        let p = Process.Start(command)
+        let p = new Process()
+        p.StartInfo.UseShellExecute <- false
+        p.StartInfo.FileName <- command
+        p.StartInfo.CreateNoWindow <- true
+        p.Start() |> ignore
         new ChildProcess(p)
 
     member self.exec(command:string, options, ?callback) = // TODO: options, callback

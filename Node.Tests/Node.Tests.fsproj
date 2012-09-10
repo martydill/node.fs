@@ -70,6 +70,7 @@
     <Compile Include="net.netServer.Listen.fs" />
     <Compile Include="process.fs" />
     <Compile Include="path.fs" />
+    <Compile Include="child_process.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Node\Node.fsproj">
