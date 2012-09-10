@@ -50,6 +50,7 @@
     <Compile Include="tcp.fs" />
     <Compile Include="tcpChat.fs" />
     <Compile Include="staticFileServer.fs" />
+    <Compile Include="webtail.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
