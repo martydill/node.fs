@@ -8,16 +8,17 @@ open Node.child_process
 let run = 
 
     let http = new http()
-    let exec = new child_process()
+    let cp = new child_process()
 
     http.createServer(fun (request, response) ->
-        ()
-//	        response.writeHead(200, {
-//	          'Content-Type': 'text/plain'
-//	        });
-//
-//	        var tail_child = exec('tail -f var/log/syslog');
-//
+
+        response.writeHead(200, dict["Content-Type", "text/html"])
+
+        let tail_child = cp.exec("tail -f Node.examples.config")
+        request.addListener("end", fun error ->
+            tail_child.kill
+        )
+
 //	        request.connection.on('end', function(){
 //              tail_child.kill();
 //	        });
