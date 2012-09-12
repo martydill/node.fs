@@ -47,6 +47,7 @@
     <Compile Include="sys.fs" />
     <Compile Include="path.fs" />
     <Compile Include="child_process.fs" />
+    <Compile Include="emitter.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

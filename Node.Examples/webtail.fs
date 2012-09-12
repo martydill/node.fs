@@ -2,6 +2,7 @@
 
 open Node.Http
 open Node.child_process
+open Node.Console
 
 // https://github.com/Leveton/nodetuts/blob/master/episode_2/webtail.js
 
@@ -9,6 +10,7 @@ let run =
 
     let http = new http()
     let cp = new child_process()
+    let console = new console()
 
     http.createServer(fun (request, response) ->
 
@@ -19,9 +21,6 @@ let run =
             tail_child.kill
         )
 
-//	        request.connection.on('end', function(){
-//              tail_child.kill();
-//	        });
 //
 //	        tail_child.on('data', function(data){
 //	          console.log(data.toString());
