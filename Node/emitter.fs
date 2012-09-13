@@ -2,10 +2,10 @@
 
 // http://nodejs.org/api/events.html#events_class_events_eventemitter
 
-type emitter = class
+type emitter() = class
+    
+    let _handlerMap = new System.Collections.Generic.Dictionary<string, System.Object>()
 
-    new() = {}
-        
     member self.addListener(event, listener) = 
         ()
 
@@ -25,5 +25,8 @@ type emitter = class
         ()
     
     member self.listeners(event) = 
+        Array.zeroCreate<System.Object> 0
+
+    member self.emit(enent, args) = // TODO multiple args
         ()
 end
