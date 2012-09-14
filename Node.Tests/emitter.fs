@@ -45,6 +45,27 @@ type ``Given an emitter`` ()=
         !count |> should equal 1
 
     [<Fact>]
+    let ``removeAllListeners("foo") removes all of the listeners from the event`` ()=
+        let count = ref 0
+        emitter.addListener("foo", fun y -> count := !count + 1)
+        emitter.addListener("foo", fun x -> count := !count + 1)
+        emitter.removeAllListeners("foo")
+        emitter.emit("foo","B")
+
+        !count |> should equal 0
+
+    [<Fact>]
+    let ``removeAllListeners() removes all of the listeners from all events`` ()=
+        let count = ref 0
+        emitter.addListener("foo", fun y -> count := !count + 1)
+        emitter.addListener("bar", fun x -> count := !count + 1)
+        emitter.removeAllListeners()
+        emitter.emit("foo","B")
+        emitter.emit("bar", "A")
+
+        !count |> should equal 0
+
+    [<Fact>]
     let ``all handlers get called when emitting an event`` ()=
         let handler1WasCalled = ref false
         let handler2WasCalled = ref false

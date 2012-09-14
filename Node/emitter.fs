@@ -35,7 +35,15 @@ type emitter() = class
 
 
     member self.removeAllListeners(?event) = 
-        ()
+        
+        match event with
+            | Some e -> 
+                match _handlerMap.TryGetValue(e) with
+                    | true, handlerList -> 
+                        handlerList.Clear() |> ignore
+                    | false, _ -> ()
+            | None -> _handlerMap.Clear()
+
 
     member self.setMaxListeners(n) =
         ()
