@@ -23,7 +23,16 @@ type emitter() = class
         ()
     
     member self.removeListener(event, listener) =
-        ()
+
+        // TODO - find a better way to do this
+        // Check to see if the function matches by checking it's type's FullName.
+        // This *seems* to work, but it sucks.
+        // Can't just compare funcs directly. http://stackoverflow.com/a/8226506/184630
+        match _handlerMap.TryGetValue(event) with
+            | true, handlerList -> 
+                handlerList.RemoveAll(fun h -> h.GetType().FullName = listener.GetType().FullName) |> ignore
+            | false, _ -> ()
+
 
     member self.removeAllListeners(?event) = 
         ()
@@ -43,7 +52,6 @@ type emitter() = class
             self.fire(handler, args)
 
     member self.emit(event, args) =
-
         match _handlerMap.TryGetValue(event) with
         | true, handler -> self.fireAll(handler, args) |> ignore
         | false, _ -> ()
