@@ -75,5 +75,12 @@ type ``Given an emitter`` ()=
        
         !handler1WasCalled |> should equal true 
         !handler2WasCalled |> should equal true
+
+    [<Fact>]
+    let ``listeners() returns an array of all the listeners`` ()=
+        emitter.addListener("foo", fun x -> ())
+        emitter.addListener("foo", fun x -> ())
+        emitter.listeners("foo").Length |> should equal 2
+
+
         
-    

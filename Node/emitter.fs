@@ -49,7 +49,9 @@ type emitter() = class
         ()
     
     member self.listeners(event) = 
-        Array.zeroCreate<System.Object> 0
+        match _handlerMap.TryGetValue(event) with
+            | true, handlers -> handlers.ToArray()
+            | false, _ -> Array.zeroCreate<System.Object> 0
 
     member private self.fire(handler:System.Object, args) =
         let f = handler :?> Microsoft.FSharp.Core.FSharpFunc<System.Object, Microsoft.FSharp.Core.Unit>
@@ -61,7 +63,7 @@ type emitter() = class
 
     member self.emit(event, args) =
         match _handlerMap.TryGetValue(event) with
-        | true, handler -> self.fireAll(handler, args) |> ignore
+        | true, handlers -> self.fireAll(handlers, args) |> ignore
         | false, _ -> ()
 
 
