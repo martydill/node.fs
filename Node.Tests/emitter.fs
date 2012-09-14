@@ -13,7 +13,7 @@ type ``Given an emitter`` ()=
         let wasCalled = ref false
         let handler = fun x -> wasCalled := true
         emitter.on("foo", handler)
-        emitter.emit("foo", "A")
+        emitter.emit("foo","A")
         
         !wasCalled |> should equal true
         
@@ -22,9 +22,17 @@ type ``Given an emitter`` ()=
         let wasCalled = ref false
         let handler = fun x -> wasCalled := true
         emitter.addListener("foo", handler)
-        emitter.emit("foo", "A")
+        emitter.emit("foo","A")
         
         !wasCalled |> should equal true
+
+    [<Fact>]
+    let ``emit() passes its argument to the handler`` ()=
+        emitter.addListener("foo", fun data ->
+            data |> should equal "A"
+        )
+        emitter.emit("foo","A")
+
 
     [<Fact>]
     let ``all handlers get called when emitting an event`` ()=
