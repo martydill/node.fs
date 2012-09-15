@@ -45,7 +45,7 @@ let run =
 
         // Handle incoming messages from clients.
         socket.addListener("data", fun data ->
-            broadcast(socketWrapper.name + "> " + data, socketWrapper)
+            broadcast(socketWrapper.name + "> " + (data.ToString()), socketWrapper)
         )
 
         // Remove the client from the list when it leaves

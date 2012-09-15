@@ -1,12 +1,19 @@
 ﻿namespace Node.net
 open node
+open Node.emitter
 
 type socket(theSocket:System.Net.Sockets.Socket) = class
+    inherit emitter()
     
-    let mutable dataHandler = fun (data:string) -> ()
-    let mutable endHandler = fun (data:string) -> ()
-    let mutable closeHandler = fun (data:string) -> ()
+    [<Literal>]
+    let EndEvent = "end"
 
+    [<Literal>]
+    let DataEvent = "data"
+
+    [<Literal>]
+    let CloseEvent = "close"
+        
     member self.write(data, ?encoding0, ?callback) = 
         let encoding = defaultArg encoding0 Utf8
 
@@ -38,25 +45,22 @@ type socket(theSocket:System.Net.Sockets.Socket) = class
             count := completedArgs.BytesTransferred
             let str = System.Text.Encoding.UTF8.GetString(data, 0, completedArgs.BytesTransferred)
             if !count > 0 then
-                dataHandler str
+                self.emit(DataEvent, str)
                 Async.Start(self.asyncRead)
             else
-                endHandler ""
+                self.emit(EndEvent, "")
         )
 
         theSocket.ReceiveAsync(args) |> ignore
     }   
 
     member self.addListener(eventName, func) = 
+        base.addListener(eventName, func)
+
         match eventName with
-        | "data" ->
-             dataHandler <- func
-             Async.Start(self.asyncRead)
-        | "end" -> endHandler <- func
-        | "close" -> closeHandler <- func
-        | _ -> raise (System.ArgumentException("Unknown event name " + eventName))
-
-
+        | "data" -> Async.Start(self.asyncRead)
+        | _ -> ()
+  
 end
 
 type netServer(requestHandlerFunction:(socket -> unit)) = class
