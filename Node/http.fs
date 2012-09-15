@@ -1,14 +1,18 @@
 ﻿namespace Node.Http
 
 open node
+open Node.emitter
 
 type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
-    
-    let req = httpListenerRequest
+    inherit emitter()
 
-    let mutable dataHandler = fun (data:string) -> ()
-    let mutable endHandler = fun (data:string) -> ()
-    let mutable closeHandler = fun (data:string) -> ()
+    [<Literal>]
+    let EndEvent = "end"
+
+    [<Literal>]
+    let DataEvent = "data"
+
+    let req = httpListenerRequest
 
     member private self.asyncRead = async {
 
@@ -19,25 +23,23 @@ type httpServerRequest(httpListenerRequest: System.Net.HttpListenerRequest) =
             let! bytesRead = req.InputStream.AsyncRead(data, 0, 1024)
             let str = System.Text.Encoding.UTF8.GetString(data, 0, bytesRead)
             count := bytesRead
-            if !count > 0 then dataHandler str
+            if !count > 0 then self.emit(DataEvent, str)
             ()
         
-        endHandler ""
+        self.emit(EndEvent, "")
     }   
 
     member self.url = 
         req.Url.OriginalString
 
     member self.addListener(eventName, func) = 
+
+        base.addListener(eventName, func)
+
+        // Don't start reading until we have a handler
         match eventName with
-        | "data" ->
-             dataHandler <- func
-             Async.Start(self.asyncRead)
-        | "end" -> endHandler <- func
-        | "close" -> closeHandler <- func
-        | _ -> raise (System.ArgumentException("Unknown event name " + eventName))
-
-
+        | DataEvent -> Async.Start(self.asyncRead)
+        | _ -> ()
     
 
 type httpServerResponse = class

@@ -9,7 +9,7 @@ type emitter() = class
     
     let _handlerMap = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<Listener>>()
 
-    member self.addListenerInternal(event, listener, oneTime) =
+    member self.addListenerInternal(event, listener:Object->unit, oneTime) =
         let handlerList = 
             match _handlerMap.TryGetValue(event) with
             | true, handlerList -> handlerList

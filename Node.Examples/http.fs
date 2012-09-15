@@ -20,7 +20,7 @@ let run =
         if pathname = "/upload" then
                     
             request.addListener("data", fun data -> 
-                let message = sprintf "You typed %s" data 
+                let message = sprintf "You typed %s" (data.ToString())
                 response.write(message)
             ) 
 

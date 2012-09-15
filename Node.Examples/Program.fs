@@ -1,12 +1,12 @@
 ﻿namespace Node.Examples
 
-open staticFileServer
+open httpDemo
 
 module Main =
         
         [<EntryPoint>]
         let main args =
-            webtail.run
+            httpDemo.run
             System.Console.ReadLine() |> ignore
             0
 

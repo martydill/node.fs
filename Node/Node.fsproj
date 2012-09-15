@@ -38,6 +38,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Compile Include="process.fs" />
+    <Compile Include="emitter.fs" />
     <Compile Include="node.fs" />
     <Compile Include="console.fs" />
     <Compile Include="http.fs" />
@@ -47,7 +48,6 @@
     <Compile Include="sys.fs" />
     <Compile Include="path.fs" />
     <Compile Include="child_process.fs" />
-    <Compile Include="emitter.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
