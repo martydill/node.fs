@@ -32,7 +32,17 @@ type ``Given an emitter`` ()=
             data |> should equal "A"
         )
         emitter.emit("foo","A")
+       
+    [<Fact>]
+    let ``once() adds a one-time listener`` ()=
+        let count = ref 0
+        let listener = fun x -> count := !count + 1
+        emitter.once("foo", listener)
+        emitter.emit("foo","A")
+        emitter.emit("foo","A")
 
+        !count |> should equal 1
+        
     [<Fact>]
     let ``removeListener("foo", listener) removes the listener from the event`` ()=
         let count = ref 0
