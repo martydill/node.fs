@@ -65,6 +65,7 @@
     <Compile Include="fs.read.fs" />
     <Compile Include="fs.exists.fs" />
     <Compile Include="fs.open.fs" />
+    <Compile Include="fs.readStream.fs" />
     <Compile Include="fs.close.fs" />
     <Compile Include="net.createServer.fs" />
     <Compile Include="net.netServer.Listen.fs" />
@@ -72,6 +73,7 @@
     <Compile Include="path.fs" />
     <Compile Include="child_process.fs" />
     <Compile Include="emitter.fs" />
+    <Compile Include="stream.readable.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Node\Node.fsproj">

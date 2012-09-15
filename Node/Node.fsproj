@@ -43,6 +43,7 @@
     <Compile Include="console.fs" />
     <Compile Include="http.fs" />
     <Compile Include="url.fs" />
+    <Compile Include="stream.fs" />
     <Compile Include="fs.fs" />
     <Compile Include="net.fs" />
     <Compile Include="sys.fs" />

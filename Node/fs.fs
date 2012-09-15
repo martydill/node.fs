@@ -248,9 +248,11 @@ type fs = class
             let exists = self.existsSync path;
             callback exists
         )
-        
 
     member self.existsSync(path) = 
         System.IO.File.Exists(path)
 
+    member self.createReadStream(path, ?options) = 
+        new Node.stream.ReadableStream()
+    
 end
