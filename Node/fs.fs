@@ -252,7 +252,8 @@ type fs = class
     member self.existsSync(path) = 
         System.IO.File.Exists(path)
 
-    member self.createReadStream(path, ?options) = 
-        new Node.stream.ReadableStream()
+    member self.createReadStream(path, ?options:Node.stream.StreamReadOptions) = 
+        new Node.stream.ReadableStream(path, ?options = options)
     
 end
+

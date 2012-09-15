@@ -15,12 +15,20 @@ type ``Given a file that exists`` ()=
     let readStream = fs.createReadStream(path)
     
     [<Fact>]
-    let ``createReadStream creates a readable stream`` ()=
-        let data = Array.zeroCreate<byte> 4
-        fs.readSync(file, data, 0, data.Length, 0) |> ignore
-        data.SequenceEqual(bytes) |> should equal true
+    let ``createReadStream creates a ReadableStream`` ()=
+        readStream |> should be ofExactType<Node.stream.ReadableStream>
+
+    [<Fact>]
+    let ``createReadStream creates a stream with readable to true`` ()=
+        readStream.readable |> should equal true
+
+    [<Fact>]
+    let ``destroy sets readable to false`` ()=
+        readStream.destroy()
+        readStream.readable |> should equal false
 
     interface System.IDisposable with
         member x.Dispose() = 
-            file.Dispose()
+            readStream.destroy()
+            //file.Dispose()
             System.IO.File.Delete path

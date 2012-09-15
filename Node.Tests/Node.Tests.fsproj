@@ -73,7 +73,6 @@
     <Compile Include="path.fs" />
     <Compile Include="child_process.fs" />
     <Compile Include="emitter.fs" />
-    <Compile Include="stream.readable.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Node\Node.fsproj">
