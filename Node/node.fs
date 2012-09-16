@@ -17,3 +17,15 @@ let getBytes(string:string, enc) =
 let proc = // NAMING: should be process
     new node_process.proc()
         
+let _cache = new System.Collections.Generic.Dictionary<System.Type, System.Object>()
+
+let require<'T when 'T:(new : unit -> 'T)> =
+
+    match _cache.TryGetValue(typeof<'T>) with
+    | true, tempInstance ->
+        tempInstance :?> 'T
+    | false, _ ->
+        let tempInstance = new 'T()
+        _cache.Add(typeof<'T>, tempInstance)
+        tempInstance
+
