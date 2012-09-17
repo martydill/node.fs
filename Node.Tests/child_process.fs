@@ -1,12 +1,13 @@
 ﻿module Test.``child_process``
 
+open node
 open Node.child_process
 open Xunit
 open FsUnit.Xunit
 
 type ``Given a ChildProces object`` ()=
 
-    let cp = new child_process()
+    let cp = require<child_process>
 
     [<Fact>]
     let ``kill kills the process`` ()=

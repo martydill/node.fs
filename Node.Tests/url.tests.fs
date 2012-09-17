@@ -1,11 +1,13 @@
-namespace UrlTests
+module Test.url
+
+open node
 open Node.Url
 open Xunit
 open FsUnit.Xunit
 
 type ``Given the url`` ()=
     
-    let u = new url()
+    let u = require<url>
     let parsedUrl = u.parse  "http://user:pass@host.com:8080/p/a/t/h?query=string#hash"
 
     [<Fact>]

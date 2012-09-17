@@ -1,12 +1,13 @@
 ﻿module Test.``path - ``
 
+open node
 open Node.path
 open Xunit
 open FsUnit.Xunit
 
 type ``Given an instance of path`` ()=
 
-    let path = new path()
+    let path = require<path>
  
     [<Fact>]
     let ``join(a, b) returns a\b`` ()=

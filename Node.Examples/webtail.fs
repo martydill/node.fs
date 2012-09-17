@@ -1,5 +1,6 @@
 ﻿module webtail
 
+open node
 open Node.Http
 open Node.child_process
 open Node.Console
@@ -8,9 +9,9 @@ open Node.Console
 
 let run = 
 
-    let http = new http()
-    let cp = new child_process()
-    let console = new console()
+    let http = require<http>
+    let cp = require<child_process>
+    let console = require<console>
 
     http.createServer(fun (request, response) ->
 

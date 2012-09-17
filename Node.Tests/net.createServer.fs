@@ -1,12 +1,13 @@
 ﻿module Test.``net - createServer``
 
+open node
 open Node.net
 open Xunit
 open FsUnit.Xunit
 
 type ``Given an instance of net`` ()=
 
-    let net = new net()
+    let net = require<net>
  
     [<Fact>]
     let ``createServer creates a server instance`` ()=

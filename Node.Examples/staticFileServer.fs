@@ -11,11 +11,11 @@ open node
 
 let run = 
 
-    let sys = new sys()
-    let my_http = new http()
-    let path = new path()
-    let url = new url()
-    let filesys = new fs()
+    let sys = require<sys>
+    let my_http = require<http>
+    let path = require<path>
+    let url = require<url>
+    let filesys = require<fs>
 
     my_http.createServer(fun (request, response) ->
             

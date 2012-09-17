@@ -1,6 +1,8 @@
 ﻿// Based on https://gist.github.com/707146
 //
 module tcpChat
+
+open node
 open Node.net
 open Node.Console
 
@@ -14,13 +16,11 @@ end
 let run = 
 
     // Load the TCP Library
-    let net = new net()
-    let console = new console()
+    let net = require<net>
+    let console = require<console>
 
     // Keep track of the chat clients
     let clients = ref List.Empty
-
-   
 
     // Start a TCP Server
     net.createServer(fun socket ->

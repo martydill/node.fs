@@ -1,6 +1,7 @@
 ﻿module Test.``fs - open``
 
 open System.IO
+open node
 open Node.fs
 open Xunit
 open FsUnit.Xunit
@@ -8,7 +9,7 @@ open System.Linq
 
 type ``Given an existing file`` ()=
 
-    let fs = new fs()
+    let fs = require<fs>
     let path = System.IO.Path.GetTempFileName()
     let mutable file:System.IO.FileStream = null
 

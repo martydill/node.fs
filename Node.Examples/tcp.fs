@@ -1,5 +1,6 @@
 ﻿module tcpDemo
 
+open node
 open Node.net
 open Node.Console
 
@@ -8,8 +9,8 @@ open Node.Console
 let run = 
 
     // Load the net module to create a tcp server.
-    let net = new net()
-    let console = new console()
+    let net = require<net>
+    let console = require<console>
 
     // Setup a tcp server
     let server = net.createServer(fun socket ->

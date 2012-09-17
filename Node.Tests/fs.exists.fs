@@ -1,12 +1,13 @@
 ﻿module Test.``fs - exists``
 
+open node
 open Node.fs
 open Xunit
 open FsUnit.Xunit
 
 type ``Given a file that exists`` ()=
 
-    let fs = new fs()
+    let fs = require<fs>
     let path = System.IO.Path.GetTempFileName()
     
     [<Fact>]

@@ -1,5 +1,6 @@
 ﻿module Test.``fs - read``
 
+open node
 open Node.fs
 open Xunit
 open FsUnit.Xunit
@@ -7,7 +8,7 @@ open System.Linq
 
 type ``Given a file that exists`` ()=
 
-    let fs = new fs()
+    let fs = require<fs>
     let path = System.IO.Path.GetTempFileName()
     let bytes = [|0x0uy;0x1uy;0x2uy;0x3uy|]
 

@@ -1,5 +1,6 @@
 ﻿module Test.``netServer - listen``
 
+open node
 open Node.net
 open Xunit
 open FsUnit.Xunit
@@ -7,7 +8,7 @@ open System.Linq
 
 type ``Given an instance of netServer`` ()=
 
-    let net = new net()
+    let net = require<net>
     let netServer = net.createServer(fun socket -> ())
 
     [<Fact>]

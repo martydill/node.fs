@@ -1,14 +1,15 @@
 ﻿module httpDemo
 
+open node
 open Node.Http
 open Node.Console
 open Node.Url
 
 let run = 
     
-    let http = new http()
-    let console = new console()
-    let url = new url()
+    let http = require<http>
+    let console = require<console>
+    let url = require<url>
 
     console.log "Running http demo"
 

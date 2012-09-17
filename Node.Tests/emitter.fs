@@ -1,12 +1,13 @@
 ﻿module Test.``emitter``
 
+open node
 open Node.emitter
 open Xunit
 open FsUnit.Xunit
 
 type ``Given an emitter`` ()=
 
-    let emitter = new emitter()
+    let emitter = require<emitter>
     
     [<Fact>]
     let ``on() adds a listener`` ()=

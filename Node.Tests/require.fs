@@ -7,7 +7,7 @@ open FsUnit.Xunit
 
 type ``Given a call to require<T>`` ()=
     
-    let http = node.require<http>
+    let http = require<http>
 
     [<Fact>]
     let ``an instance of T is returned`` ()=
