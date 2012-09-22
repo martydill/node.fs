@@ -2,8 +2,15 @@
 
 open System
 
+
 // http://nodejs.org/api/events.html#events_class_events_eventemitter
 type Listener = {func:Object; isOneTime:bool}
+
+module EmitterMethods = 
+
+    let mutable tickMethod:((unit->unit) -> unit) =
+        fun x -> ()
+
 
 type emitter() = class
     
@@ -68,8 +75,10 @@ type emitter() = class
         handlerList.RemoveAll(fun listener -> listener.isOneTime) |> ignore
 
     member self.emit(event, args) =
-        match _handlerMap.TryGetValue(event) with
-        | true, handlers -> self.fireAll(handlers, args) |> ignore
-        | false, _ -> ()
-        
+        EmitterMethods.tickMethod(fun x ->
+            match _handlerMap.TryGetValue(event) with
+            | true, handlers -> self.fireAll(handlers, args) |> ignore
+            | false, _ -> ()
+        )
 end
+

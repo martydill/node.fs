@@ -29,3 +29,29 @@ let require<'T when 'T:(new : unit -> 'T)> =
         _cache.Add(typeof<'T>, tempInstance)
         tempInstance
 
+ 
+
+let eventsForNextTick = new System.Collections.Generic.List<unit->unit>()
+
+let nextTick(x) = 
+    eventsForNextTick.Add(x)
+           
+let tick () = 
+    System.Threading.Thread.Sleep(1)
+
+    let eventsToFire =  new System.Collections.Generic.List<unit->unit>(eventsForNextTick)
+    eventsForNextTick.Clear()
+
+    if eventsToFire.Count > 0 then
+        eventsToFire |> Seq.cast |> Seq.iter(fun f -> f())
+        
+// Starts the event loop
+let start func =
+    
+    Node.emitter.EmitterMethods.tickMethod <- fun x -> nextTick(x)
+    func()
+
+    while true do
+        tick()
+
+        

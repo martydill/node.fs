@@ -1,11 +1,10 @@
 ﻿namespace Node.Examples
+open node
 
 module Main =
         
         [<EntryPoint>]
         let main args =
-            tcpDemo.run
-            System.Console.ReadLine() |> ignore
+            node.start(fun x -> httpDemo.run)
             0
-
          
