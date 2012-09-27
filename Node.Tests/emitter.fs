@@ -8,14 +8,16 @@ open FsUnit.Xunit
 type ``Given an emitter`` ()=
 
     let emitter = require<emitter>
-    
+    do EmitterMethods.tickMethod <- node.nextTick
+
     [<Fact>]
     let ``on() adds a listener`` ()=
         let wasCalled = ref false
         let handler = fun x -> wasCalled := true
         emitter.on("foo", handler)
         emitter.emit("foo","A")
-        
+        node.tick()
+
         !wasCalled |> should equal true
         
     [<Fact>]
@@ -24,7 +26,8 @@ type ``Given an emitter`` ()=
         let handler = fun x -> wasCalled := true
         emitter.addListener("foo", handler)
         emitter.emit("foo","A")
-        
+        node.tick()
+
         !wasCalled |> should equal true
 
     [<Fact>]
@@ -33,6 +36,7 @@ type ``Given an emitter`` ()=
             data |> should equal "A"
         )
         emitter.emit("foo","A")
+        node.tick()
        
     [<Fact>]
     let ``once() adds a one-time listener`` ()=
@@ -41,6 +45,7 @@ type ``Given an emitter`` ()=
         emitter.once("foo", listener)
         emitter.emit("foo","A")
         emitter.emit("foo","A")
+        node.tick()
 
         !count |> should equal 1
         
@@ -50,8 +55,10 @@ type ``Given an emitter`` ()=
         let listener = fun x -> count := !count + 1
         emitter.addListener("foo", listener)
         emitter.emit("foo","A")
+        node.tick()
         emitter.removeListener("foo", listener)
         emitter.emit("foo","B")
+        node.tick()
 
         !count |> should equal 1
 
@@ -62,6 +69,7 @@ type ``Given an emitter`` ()=
         emitter.addListener("foo", fun x -> count := !count + 1)
         emitter.removeAllListeners("foo")
         emitter.emit("foo","B")
+        node.tick()
 
         !count |> should equal 0
 
@@ -73,6 +81,7 @@ type ``Given an emitter`` ()=
         emitter.removeAllListeners()
         emitter.emit("foo","B")
         emitter.emit("bar", "A")
+        node.tick()
 
         !count |> should equal 0
 
@@ -83,7 +92,8 @@ type ``Given an emitter`` ()=
         emitter.addListener("foo", fun x -> handler1WasCalled := true)
         emitter.addListener("foo", fun x -> handler2WasCalled := true)
         emitter.emit("foo", "A")
-       
+        node.tick()
+
         !handler1WasCalled |> should equal true 
         !handler2WasCalled |> should equal true
 
@@ -94,4 +104,9 @@ type ``Given an emitter`` ()=
         emitter.listeners("foo").Length |> should equal 2
 
 
-        
+               
+    interface System.IDisposable with
+        member x.Dispose() = 
+            node.stop
+            node.eventsForNextTick.Clear()
+            emitter.removeAllListeners()

@@ -45,13 +45,21 @@ let tick () =
     if eventsToFire.Count > 0 then
         eventsToFire |> Seq.cast |> Seq.iter(fun f -> f())
         
+let mutable _running:bool = false
+
 // Starts the event loop
 let start func =
     
     Node.emitter.EmitterMethods.tickMethod <- fun x -> nextTick(x)
     func()
 
-    while true do
+    _running <- true
+    while _running do
         tick()
+
+// Gracefully exits the event loop
+let stop = 
+    _running <- false
+
 
         
