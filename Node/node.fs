@@ -13,9 +13,6 @@ let getBytes(string:string, enc) =
     | Utf8 -> System.Text.Encoding.UTF8.GetBytes(string)
     | Ascii -> System.Text.Encoding.ASCII.GetBytes(string)
 
-
-let proc = // NAMING: should be process
-    new node_process.proc()
         
 let _cache = new System.Collections.Generic.Dictionary<System.Type, System.Object>()
 
@@ -63,3 +60,5 @@ let stop =
 
 
         
+let proc = // NAMING: should be process
+    new node_process.proc(nextTick)
