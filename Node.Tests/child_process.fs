@@ -13,7 +13,8 @@ type ``Given a ChildProces object`` ()=
     let ``kill kills the process`` ()=
         let childProcess = cp.exec "tail"
         let id = childProcess.pid
+
+        let dotNetProcess = System.Diagnostics.Process.GetProcessById(id)
         childProcess.kill
-        let doesChildProcessExist = System.Diagnostics.Process.GetProcesses() |> Seq.exists(fun p -> p.Id = id)
-        doesChildProcessExist |> should equal false
+        dotNetProcess.WaitForExit(100) |> should equal true
 
