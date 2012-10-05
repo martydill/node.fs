@@ -1,5 +1,23 @@
 ﻿module node   
    
+   
+type proc(nextTickMethod:(unit->unit)->unit) = class // NAMING: Should be process
+    inherit Node.emitter.emitter()
+  
+    [<Literal>]
+    let EndEvent = "exit"
+
+    member self.cwd = 
+        System.Environment.CurrentDirectory
+
+    member self.nextTick f = 
+        nextTickMethod(f)
+
+    member self.eventLoopEnding = 
+        self.emit(EndEvent, ())
+end
+
+
 type Encoding = Utf8 | Ascii
 
 let getEncoding enc : System.Text.Encoding = 
@@ -41,24 +59,30 @@ let tick () =
 
     if eventsToFire.Count > 0 then
         eventsToFire |> Seq.cast |> Seq.iter(fun f -> f())
+
         
 let mutable _running:bool = false
+let _proc = new proc(nextTick)
 
 // Starts the event loop
 let start func =
-    
+
+    _running <- true
+        
     Node.emitter.EmitterMethods.tickMethod <- fun x -> nextTick(x)
     func()
 
-    _running <- true
+
     while _running do
         tick()
 
+    _proc.eventLoopEnding
+    
+
 // Gracefully exits the event loop
-let stop = 
+let stop() = 
     _running <- false
 
 
-        
 let proc = // NAMING: should be process
-    new node_process.proc(nextTick)
+    _proc

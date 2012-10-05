@@ -20,3 +20,18 @@ type ``Given a process`` ()=
         node.tick()
         node.tick()
         !callCount |> should equal 1
+
+    [<Fact>]
+    let ``the end event fires when the event loop exits`` ()=
+        let eventFired = ref false
+
+        proc.addListener("exit", fun data ->
+            eventFired := true
+        )
+
+        node.start( fun () ->
+            node.stop()
+        )     
+
+        node.tick()
+        !eventFired |> should equal true
