@@ -53,6 +53,8 @@ type BaseStream(stream:System.IO.Stream) as this = class
                     let! n = stream.AsyncRead(buffer, 0, buffer.Length)
                     if n > 0 then self.emit(DataEvent, buffer.Take(n).ToArray())
                     count := n
+
+                self.emit(EndEvent, ())
             with
                 | :? System.IO.IOException -> ()    // raise error event?
                 | :? System.ObjectDisposedException -> ()

@@ -27,15 +27,30 @@ type ``Given a file that exists`` ()=
     [<Fact>]
     let ``createReadStream fires the data event with the file's data`` ()=
 
-        Node.emitter.EmitterMethods.tickMethod <- fun x -> nextTick(x)
+        let eventFired = ref false
         node.start( fun () ->
-            let eventFired = ref false
             stream.addListener("data", fun data ->
+                eventFired := true
                 let fileBytes = data :?> byte[]
                 fileBytes.SequenceEqual(bytes) |> should equal true
                 node.stop()
             )
         )
+
+        !eventFired |> should equal true
+
+    [<Fact>]
+    let ``createReadStream fires the end event when there is no more data`` ()=
+
+        let eventFired = ref false
+        node.start( fun () ->
+            stream.addListener("end", fun data ->
+               eventFired := true
+               node.stop()
+            )
+        )
+
+        !eventFired |> should equal true
 
     [<Fact>]
     let ``destroy sets readable to false`` ()=
