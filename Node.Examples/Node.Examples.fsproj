@@ -46,14 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Compile Include="http.fs" />
     <Compile Include="tcp.fs" />
     <Compile Include="tcpChat.fs" />
     <Compile Include="staticFileServer.fs" />
     <Compile Include="webtail.fs" />
+    <Compile Include="node-sqlserver.fs" />
+    <Compile Include="http.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Node.Libraries\Node.Libraries.fsproj">
+      <Name>Node.Libraries</Name>
+      <Project>{e62773f0-1b60-46a1-97b1-2030ffb3e236}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Node\Node.fsproj">
       <Name>Node</Name>
       <Project>{54569b40-8be0-4089-bb82-9383ac7b4cc3}</Project>
