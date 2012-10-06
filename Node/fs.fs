@@ -253,7 +253,7 @@ type fs = class
         System.IO.File.Exists(path)
 
     member self.createReadStream(path, ?options:Node.stream.StreamReadOptions) = 
-        new Node.stream.ReadableStream(path, ?options = options)
+        new Node.stream.FileStream(path, options)
     
 end
 

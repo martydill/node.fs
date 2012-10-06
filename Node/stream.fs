@@ -1,4 +1,5 @@
 ﻿namespace Node.stream
+open System.Linq
 
 type StreamReadOptions = {
     flags: string
@@ -14,24 +15,52 @@ type StreamReadOptions = {
 //  mode: 0666,
 //  bufferSize: 64 * 1024
 //}
-type BaseStream() = class end
+type BaseStream(stream:System.IO.Stream) as this = class
+    inherit Node.emitter.emitter()
 
+    [<Literal>]
+    let CloseEvent = "close"
+
+    [<Literal>]
+    let ErrorEvent = "error"
     
-type ReadableStream(path, ?options:StreamReadOptions) = class
-    inherit BaseStream()
+    [<Literal>]
+    let DataEvent = "data"
 
-    let _fs = new System.IO.FileStream(path, System.IO.FileMode.Open)
+    [<Literal>]
+    let EndEvent = "end"
 
-    member self.destroy() = 
-        _fs.Dispose()
+    do
+        
+        match stream.CanRead with
+        | true -> Async.Start this.StartReadingStream
+        | false -> ()
+
+    member self.destroy = 
+        stream.Dispose
+        
 
     member self.readable = 
-        _fs.CanRead
+        stream.CanRead
 
-end
+    member private self.StartReadingStream = 
+        async {
+            let count = ref 1
+            try
 
+                while !count > 0 && stream.CanRead do
+                    let buffer = Array.zeroCreate<byte>(1024)
+                    let! n = stream.AsyncRead(buffer, 0, buffer.Length)
+                    if n > 0 then self.emit(DataEvent, buffer.Take(n).ToArray())
+                    count := n
+            with
+                | :? System.IO.IOException -> ()    // raise error event?
+                | :? System.ObjectDisposedException -> ()
+        }
 
-type WritableStream() = class
-    inherit BaseStream()
+ end
 
-end
+ type FileStream(path, ?options) = class
+    inherit BaseStream(new System.IO.FileStream(path, System.IO.FileMode.OpenOrCreate))
+
+ end

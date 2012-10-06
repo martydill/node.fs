@@ -5,6 +5,7 @@ open Node.fs
 open Xunit
 open FsUnit.Xunit
 open System.Linq
+open System.Threading
 
 type ``Given a file that exists`` ()=
 
@@ -13,23 +14,35 @@ type ``Given a file that exists`` ()=
     let bytes = [|0x0uy;0x1uy;0x2uy;0x3uy|]
 
     let ignored = System.IO.File.WriteAllBytes(path, bytes)
-    let readStream = fs.createReadStream(path)
+    let stream = fs.createReadStream(path)
     
     [<Fact>]
     let ``createReadStream creates a ReadableStream`` ()=
-        readStream |> should be ofExactType<Node.stream.ReadableStream>
+        stream |> should be ofExactType<Node.stream.FileStream>
 
     [<Fact>]
     let ``createReadStream creates a stream with readable to true`` ()=
-        readStream.readable |> should equal true
+        stream.readable |> should equal true
+
+    [<Fact>]
+    let ``createReadStream fires the data event with the file's data`` ()=
+
+        Node.emitter.EmitterMethods.tickMethod <- fun x -> nextTick(x)
+        node.start( fun () ->
+            let eventFired = ref false
+            stream.addListener("data", fun data ->
+                let fileBytes = data :?> byte[]
+                fileBytes.SequenceEqual(bytes) |> should equal true
+                node.stop()
+            )
+        )
 
     [<Fact>]
     let ``destroy sets readable to false`` ()=
-        readStream.destroy()
-        readStream.readable |> should equal false
+        stream.destroy()
+        stream.readable |> should equal false
 
     interface System.IDisposable with
         member x.Dispose() = 
-            readStream.destroy()
-            //file.Dispose()
+            stream.destroy()
             System.IO.File.Delete path
