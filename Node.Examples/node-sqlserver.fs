@@ -6,15 +6,16 @@ open Node.Libraries
 let run = 
     let sql = require<sqlserver>
     let connectionString = "Data Source=.\\sqlexpress;Initial Catalog=master;Integrated Security=SSPI;"
-    
-    sql.query(connectionString,  fun(err, data) ->
+    sql.openconnection(connectionString, fun(err, conn) ->
 
-        for row in data do
-            let fmt = System.String.Join(", ", row)
-            printfn "%s" fmt 
+        conn.query(connectionString,  fun(err, data) ->
 
-    , "select * from sys.databases") |> ignore
+            for row in data do
+                let fmt = System.String.Join(", ", row)
+                printfn "%s" fmt 
 
+        , "select * from sys.databases") |> ignore
+    ) |> ignore
 
 
   
