@@ -10,11 +10,11 @@ let run =
 
         conn.query(connectionString,  fun(err, data) ->
 
-            for row in data do
+            for row:System.Object[] in data do
                 let fmt = System.String.Join(", ", row)
                 printfn "%s" fmt 
 
-        , "select * from sys.databases") |> ignore
+        , "select * from sys.databases where name = ?", "master") |> ignore
     ) |> ignore
 
 

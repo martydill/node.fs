@@ -1,20 +1,35 @@
-﻿namespace Node.Libraries
+﻿// F# version of node-sqlserver
+// Based on https://github.com/WindowsAzure/node-sqlserver/blob/master/lib/sql.js
+
+namespace Node.Libraries
 
 open System.Data.SqlClient
 open System
+open System.Linq
 
 type sqlserver_connection(_conn) = class
+
+    static member ParameterReplacementRegex = new System.Text.RegularExpressions.Regex("\?")
 
     member self.query(connectionString, callback, query, [<ParamArray>] args: Object[]) = 
         self.queryRaw(connectionString, callback, query, args)
 
-    member self.queryRaw(connectionString, callback, query, [<ParamArray>] args: Object[]) = 
-             
-        use cmd = new SqlCommand(query, _conn)
+    member self.queryRaw(connectionString, callback, query:string, [<ParamArray>] args: Object[]) = 
+         
+        let mutable modifiedQuery = query
 
-//        for i in 0 .. args.Length - 1 do
-//            cmd.Parameters.AddWithValue("{" + i.ToString() + "}", args.[i]) |> ignore
-        
+        use cmd = new SqlCommand()
+
+        // Replace ? parameters with named parameters, in order
+        for param in args do
+            let parameterNumber = cmd.Parameters.Count
+            let parameterName = "@p" + parameterNumber.ToString()
+            cmd.Parameters.AddWithValue(parameterName, param) |> ignore
+            modifiedQuery <- sqlserver_connection.ParameterReplacementRegex.Replace(modifiedQuery, parameterName, 1) 
+
+        cmd.CommandText <- modifiedQuery
+        cmd.Connection <- _conn
+
         let allRows = new System.Collections.Generic.List<Object[]>()
 
         use reader = cmd.ExecuteReader()
@@ -23,8 +38,7 @@ type sqlserver_connection(_conn) = class
             reader.GetValues(rowValues) |> ignore
             allRows.Add(rowValues)
 
-        callback(null, allRows.ToArray())
-        
+        callback(null, allRows.ToArray())      
          
     interface System.IDisposable with
         member x.Dispose() = 
@@ -32,8 +46,6 @@ type sqlserver_connection(_conn) = class
 
 end
 
-// F# version of node-sqlserver
-// Based on https://github.com/WindowsAzure/node-sqlserver/blob/master/lib/sql.js
 
 
 type sqlserver() = class
@@ -56,6 +68,4 @@ type sqlserver() = class
         self.openconnection(connectionString, fun(err, conn) ->
             conn.queryRaw(connectionString, callback, query, args)
         )
-        
 end
-
