@@ -8,14 +8,14 @@ let run =
     let connectionString = "Data Source=.\\sqlexpress;Initial Catalog=master;Integrated Security=SSPI;"
     sql.openconnection(connectionString, fun(err, conn) ->
 
-        conn.query(connectionString,  fun(err, data) ->
+        conn.query(connectionString, "select * from sys.databases where name = ?", [|"master"|] , fun(err, data) ->
 
             for row:System.Object[] in data do
                 let fmt = System.String.Join(", ", row)
                 printfn "%s" fmt 
-
-        , "select * from sys.databases where name = ?", "master") |> ignore
+       )
     ) |> ignore
+
 
 
   

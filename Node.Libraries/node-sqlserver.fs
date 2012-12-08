@@ -11,10 +11,10 @@ type sqlserver_connection(_conn) = class
 
     static member ParameterReplacementRegex = new System.Text.RegularExpressions.Regex("\?")
 
-    member self.query(connectionString, callback, query, [<ParamArray>] args: Object[]) = 
-        self.queryRaw(connectionString, callback, query, args)
+    member self.query(connectionString, query, [<ParamArray>] args: Object[], callback) = 
+        self.queryRaw(connectionString, query, args, callback)
 
-    member self.queryRaw(connectionString, callback, query:string, [<ParamArray>] args: Object[]) = 
+    member self.queryRaw(connectionString, query:string, [<ParamArray>] args: Object[], callback) = 
          
         let mutable modifiedQuery = query
 
@@ -61,11 +61,11 @@ type sqlserver() = class
             callback(null, new sqlserver_connection(conn))
         )
 
-    member self.query(connectionString, callback, query, [<ParamArray>] args: Object[]) = 
-        self.queryRaw(connectionString, callback, query, args)
+    member self.query(connectionString, query, [<ParamArray>] args: Object[], callback) = 
+        self.queryRaw(connectionString, query, args, callback)
     
-    member self.queryRaw(connectionString, callback, query, [<ParamArray>] args: Object[]) = 
+    member self.queryRaw(connectionString, query, [<ParamArray>] args: Object[], callback) = 
         self.openconnection(connectionString, fun(err, conn) ->
-            conn.queryRaw(connectionString, callback, query, args)
+            conn.queryRaw(connectionString, query, args, callback)
         )
 end
