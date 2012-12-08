@@ -20,16 +20,26 @@ type path = class
         ()
 
     member self.dirname p = 
-        ()
+        System.IO.Path.GetDirectoryName(p)
 
-    member self.basename(p, ?ext) = 
-        ()
+    member self.basename(p, ?ext:string) = 
+        match ext with
+        | None -> System.IO.Path.GetFileName p
+        | Some string -> 
+            match string with
+            | s when p.EndsWith(s) ->
+                let newPath = System.IO.Path.GetFileName p
+                newPath.Substring(0, newPath.Length - s.Length)
+            | s -> System.IO.Path.GetFileName p
 
-    member self.extname p = 
-        ()
+    member self.extname(p:string) = 
+        match p with
+        | str when str = null -> ""
+        | str when str.EndsWith(".") -> "."
+        | str -> System.IO.Path.GetExtension str
 
     member self.sep = 
-        ()
+        System.IO.Path.DirectorySeparatorChar
 
     member private self.stripInitialSlashes str:string =
         str.TrimStart([|'\\';'/'|])
