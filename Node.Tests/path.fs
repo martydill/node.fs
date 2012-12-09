@@ -68,3 +68,9 @@ type ``Given an instance of path`` ()=
     let ``basename foo.txt, .html returns foo.txt`` ()=
         let name = path.basename(@"foo.txt", ".html")
         name |> should equal @"foo.txt"
+    
+    [<Fact>]
+    let ``normalize C:\foo\bar\\baz\asdf\quux\.. returns C:\foo\bar\baz\asdf`` ()=
+        let name = path.normalize @"C:\foo\bar\\baz\asdf\quux\.."
+        name |> should equal @"C:\foo\bar\baz\asdf"
+

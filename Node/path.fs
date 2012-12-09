@@ -6,7 +6,7 @@ type path = class
     new() = {}
 
     member self.normalize p = 
-        ()
+        System.IO.Path.GetFullPath p
 
     member self.join([<System.ParamArray>] args: string[]) = 
         let filtered = args |> Seq.filter (fun str -> str <> null) |> Seq.map self.stripInitialSlashes |> Seq.toArray
