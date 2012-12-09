@@ -64,7 +64,7 @@ type ``Given an instance of path`` ()=
         let name = path.basename(@"\foo\bar\baz\asdf\quux.html", ".html")
         name |> should equal @"quux"
 
-    [<Fact>]
+    [<Fact>]    
     let ``basename foo.txt, .html returns foo.txt`` ()=
         let name = path.basename(@"foo.txt", ".html")
         name |> should equal @"foo.txt"

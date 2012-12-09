@@ -5,10 +5,13 @@ open Node.Url
 open Xunit
 open FsUnit.Xunit
 
-type ``Given the url`` ()=
+type ``Given the http url`` ()=
     
     let u = require<url>
-    let parsedUrl = u.parse  "http://user:pass@host.com:8080/p/a/t/h?query=string#hash"
+
+    let originalUrl = "http://user:pass@host.com:8080/p/a/t/h?query=string#hash"
+    let parsedUrl = u.parse originalUrl
+    let formattedUrl = u.format parsedUrl
 
     [<Fact>]
     let ``the protocol should be http:`` ()=
@@ -49,3 +52,36 @@ type ``Given the url`` ()=
     [<Fact>]
     let ``the hash should be #hash`` ()=
         parsedUrl.hash |> should equal "#hash"
+
+    [<Fact>]
+    let ``format returns the original url`` ()=
+        formattedUrl |> should equal originalUrl
+
+
+
+type ``Given the mailto url`` ()=
+
+    let u = require<url>
+    let originalUrl = "mailto:foo@bar.com"
+    let parsedUrl = u.parse originalUrl
+    let formattedUrl = u.format parsedUrl
+
+    [<Fact>]
+    let ``the protocol should be mailto:`` ()=
+        parsedUrl.protocol |> should equal "mailto:"
+
+    [<Fact>]
+    let ``the auth should be mailto:`` ()=
+        parsedUrl.auth |> should equal "foo"
+
+    [<Fact>]
+    let ``the host should be mailto:`` ()=
+        parsedUrl.host |> should equal "bar.com"
+
+    [<Fact>]
+    let ``the hostname should be mailto:`` ()=
+        parsedUrl.hostname|> should equal "bar.com"
+
+    [<Fact>]
+    let ``the href should be mailto:`` ()=
+        parsedUrl.href |> should equal "mailto:foo@bar.com"

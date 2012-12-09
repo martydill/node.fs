@@ -30,7 +30,7 @@ type url = class
         { 
             href = theParsedUrl.OriginalString;
             protocol = theParsedUrl.Scheme + ":";
-            host = theParsedUrl.Host + ":" + theParsedUrl.Port.ToString();
+            host = theParsedUrl.Host + self.getPortFor(theParsedUrl)
             auth = theParsedUrl.UserInfo;
             hostname = theParsedUrl.Host;
             port = theParsedUrl.Port.ToString();
@@ -40,10 +40,41 @@ type url = class
             query = query;
             hash = theParsedUrl.Fragment;
          }
-        
-    member self.format urlobj =
-        raise (System.NotImplementedException())
+    
+    member private self.getPortFor(urlobj) =
+        match urlobj.Scheme with
+        | "mailto" -> "" // TODO - is this the only one that shouldn't get a port?
+        | _ -> ":" + urlobj.Port.ToString()
+
+    member self.format(urlobj:parsedUrl) =
+        let uri = new System.Uri(self.protocolFor(urlobj.protocol) + self.authFor(urlobj.auth) + self.hostFor(urlobj) + urlobj.pathname + self.queryFor(urlobj) + self.hashFor(urlobj))
+        uri.OriginalString
 
     member self.resolve(fromUrl, toUrl) =
         raise (System.NotImplementedException())
+
+    member private self.protocolFor(protocol:string) = 
+        let strippedProtocol = protocol.Replace(":", "")
+        match strippedProtocol with 
+        | "ftp" | "http" | "https" | "gopher" | "file" -> strippedProtocol + "://"
+        | _ -> strippedProtocol + ":"
+
+    member private self.authFor(auth:string) = 
+        match auth with
+        | null | "" -> ""
+        | _ -> auth + "@"
+
+    member private self.hostFor(urlobj) =
+        match urlobj.host with
+        | null | ""   -> urlobj.hostname + ":" + urlobj.port
+        | _ -> urlobj.host
+
+    member private self.queryFor(urlobj) =
+        match urlobj.search with
+        | null | "" -> urlobj.query
+        | _ -> urlobj.search
+
+     member private self.hashFor(urlobj) =
+        urlobj.hash
+
 end
