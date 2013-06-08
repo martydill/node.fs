@@ -45,7 +45,7 @@
     <Compile Include="stream.fs" />
     <Compile Include="fs.fs" />
     <Compile Include="net.fs" />
-    <Compile Include="sys.fs" />
+    <Compile Include="util.fs" />
     <Compile Include="path.fs" />
     <Compile Include="child_process.fs" />
   </ItemGroup>

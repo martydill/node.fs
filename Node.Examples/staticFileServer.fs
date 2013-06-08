@@ -5,13 +5,13 @@
 open Node.Http
 open Node.Url
 open Node.fs
-open Node.sys
+open Node.util
 open Node.path
 open node
 
 let run = 
 
-    let sys = require<sys>
+    let util = require<util>
     let my_http = require<http>
     let path = require<path>
     let url = require<url>
@@ -47,4 +47,4 @@ let run =
 
     ).listen(8080)
 
-    //sys.puts("Server Running on 8080") TODO - not implemented
+    util.puts("Server Running on 8080")

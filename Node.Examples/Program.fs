@@ -5,6 +5,6 @@ module Main =
         
         [<EntryPoint>]
         let main args =
-            node.start(fun x -> node_sqlserver.run)
+            node.start(fun x -> staticFileServer.run)
             0
          
