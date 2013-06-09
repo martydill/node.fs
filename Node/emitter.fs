@@ -1,7 +1,7 @@
 ﻿namespace Node.emitter
 
 open System
-
+open Node.Console
 
 // http://nodejs.org/api/events.html#events_class_events_eventemitter
 type Listener = {func:Object; isOneTime:bool}
@@ -14,6 +14,11 @@ module EmitterMethods =
 
 type emitter() = class
     
+    let console = new console() // todo - this doesn't use module system yet
+
+    let DefaultMaxListeners = 10
+    let mutable _maxListeners = DefaultMaxListeners
+
     let _handlerMap = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<Listener>>()
 
     member self.addListenerInternal(event, listener:Object->unit, oneTime) =
@@ -26,6 +31,10 @@ type emitter() = class
 
         handlerList.Add(myListener)
         _handlerMap.[event] <- handlerList
+
+        if handlerList.Count > _maxListeners && _maxListeners > 0 then
+            console.log "warning: possible emitter memory leak detected. %d listeners added. Use emitter.setMaxListeners() to increase limit." handlerList.Count
+            
 
     member self.addListener(event, listener) = 
         self.addListenerInternal(event, listener, false)
@@ -57,6 +66,7 @@ type emitter() = class
             | None -> _handlerMap.Clear()
 
     member self.setMaxListeners(n) =
+        _maxListeners <- n
         ()
     
     member self.listeners(event) = 
